@@ -12,7 +12,7 @@ const roles = [
   {
     id: "medical-professional",
     name: "Medical Professional",
-    image: "/doctor.svg",
+    image: "/medical-professional.svg",
     alt: "Medical Professional",
   },
   {
