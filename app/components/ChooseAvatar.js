@@ -1,79 +1,94 @@
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
-import React, { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
+const roles = [
+  {
+    id: "ai-chatbot",
+    name: "AI Chatbot",
+    image: "/ai-chatbot.svg",
+    alt: "AI Chatbot",
+  },
+  {
+    id: "medical-professional",
+    name: "Medical Professional",
+    image: "/doctor.svg",
+    alt: "Medical Professional",
+  },
+  {
+    id: "student",
+    name: "Student",
+    image: "/student.svg",
+    alt: "Student",
+  },
+];
+
 const ChooseAvatar = () => {
-    const [selected, setselected] = useState(0)
-    return (
-        <div className='bg-[#F6F6F2]'>
+  const [selected, setSelected] = useState("");
 
-      
-        <div className=' max-w-[100%] lg:max-w-[80%] mx-auto mt-[71px] '>
-            <h2 className='text-[40px] text-center leading-[48px] font-semibold'>Choose your assistant</h2>
+  const handleSelection = (roleId) => {
+    setSelected(roleId);
+  };
 
-            <div className='grid grid-col-1 md:grid-cols-3 mt-[100px] gap-[24px]'>
-                <div className='flex flex-col'>
+  return (
+    <div className="bg-[#F6F6F2] min-h-screen flex items-center">
+      <div className="max-w-[100%] lg:max-w-[80%] mx-auto mt-18">
+        <h2 className="text-4xl text-center leading-tight font-semibold">
+          Choose your assistant
+        </h2>
 
-                    <div onClick={() => setselected(1)} className={`bg-[#FAFCFC]  flex-grow h-full ${selected === 1 ? 'select-shadow ' : 'inner-shadow'}  px-[53px] rounded-[16px] flex justify-center items-center`}>
-
-                        <Image
-                            src="/robot.svg"
-                            width={204}
-                            height={484}
-                            alt='doctor'
-                            
-
-                        />
-
-                    </div>
-                    <h2 className=' text-center mt-[24px] font-bold text-[20px] leading-[24px]'>AI Chatbot</h2>
-                </div>
-                <div className='flex flex-col'>
-                    <div onClick={() => setselected(2)} className={`bg-[#FAFCFC]  flex-grow h-full ${selected === 2 ? 'select-shadow' : 'inner-shadow'}  px-[53px] rounded-[16px] flex justify-center items-center`}>
-
-
-                        <Image
-                            src="/doctor3.svg"
-                            width={204}
-                            height={484}
-                            alt='doctor'
-                            className='h-full'
-                        />
-                    </div>
-                    <h2 className=' text-center mt-[24px] font-bold text-[20px] leading-[24px]'>Medical Professional</h2>
-                </div>
-                <div className='flex flex-col'>
-                    <div onClick={() => setselected(3)} className={`bg-[#FAFCFC]  flex-grow h-full ${selected === 3 ? 'select-shadow' : 'inner-shadow'}  px-[53px] rounded-[16px] flex justify-center items-center`}>
-
-
-                        <Image
-                            src="/student.svg"
-                            width={204}
-                            height={484}
-                            alt='doctor'
-                            className='h-full'
-                        />
-                    </div>
-                    <h2 className=' text-center mt-[24px] font-bold text-[20px] leading-[24px]'>Medical Professional</h2>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-24 gap-6">
+          {roles.map((role) => (
+            <div key={role.id} className="flex flex-col items-center">
+              <div
+                onClick={() => handleSelection(role.id)}
+                className={`bg-[#FAFCFC] flex-grow h-full ${
+                  selected === role.id ? "select-shadow" : "inner-shadow"
+                } px-14 py-10 rounded-2xl flex justify-center items-center cursor-pointer transition-shadow duration-300`}
+              >
+                <Image
+                  src={role.image}
+                  width={204}
+                  height={484}
+                  alt={role.alt}
+                  className="h-full"
+                />
+              </div>
+              <h3 className="text-center mt-6 font-bold text-xl leading-6">
+                {role.name}
+              </h3>
             </div>
-            <div className='flex flex-col justify-center items-center'>
-
-                <Link href="/doctor">
-                    <button className={`mt-[51px] ${selected == 0 ? 'bg-[#C9C7C7]' : 'bg-gradient-to-r from-[#28AAE1] via-[#0364B3] to-[#012B4D] '} flex items-center mb-[30px] text-[24px] leading-[29px] font-bold text-white px-[40px] py-[16px]  gap-2 rounded-[99px] `}>
-                        Carry On
-                        <Image
-                            src="/arrow-right.svg"
-                            width={28}
-                            height={28}
-                            alt="width"
-                        />
-                    </button>
-                </Link>
-            </div>
+          ))}
         </div>
-        </div>
-    )
-}
 
-export default ChooseAvatar
+        <div className="flex flex-col justify-center items-center">
+          <Link href={selected ? `/${selected}` : "#"}>
+            <p
+              className={`mt-12 flex items-center mb-8 text-2xl leading-7 font-bold text-white px-10 py-4 gap-2 rounded-full ${
+                selected
+                  ? "bg-gradient-to-r from-[#28AAE1] via-[#0364B3] to-[#012B4D] hover:opacity-90"
+                  : "bg-[#C9C7C7] cursor-not-allowed"
+              }`}
+              // Disable click if not selected
+              onClick={(e) => {
+                if (!selected) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              Carry On
+              <Image
+                src="/arrow-right.svg"
+                width={28}
+                height={28}
+                alt="Arrow Right"
+              />
+            </p>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ChooseAvatar;
