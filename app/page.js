@@ -1,43 +1,51 @@
+"use client"
 import Image from "next/image";
+import ChooseAvatar from "./components/ChooseAvatar";
+import { useState } from "react";
 
 export default function Home() {
+  const [clicked, setClicked] = useState(false)
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-4xl sm:text-5xl font-bold text-center sm:text-left">
-          Welcome to the
-        </h1>
+    <div className=" px-[32px] md:px-[64px] flex flex-col  pt-[40px] min-h-screen bg-[#F6F6F2]">
+      {clicked &&
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+          src="/logo2.svg"
+          width={40}
+          height={40}
+          alt="logo"
         />
+      }
+      {!clicked ? <div className="flex flex-col justify-between flex-grow items-center mt-[100px]">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Let's Get Started
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-          </a>
+        <p className="text-[32px] leading-[38px] font-semibold text-[#000000] ">Welcome to the</p>
+        <div>
+          <Image
+            src="/logo3.svg"
+            width={365}
+            height={80}
+            alt="logo"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        {" "}
-        image will be there
-      </footer>
+        <button onClick={() => setClicked(!clicked)} className="bg-gradient-to-r flex items-center text-[16px] sm:text-[24px] leading-[29px] font-bold text-white px-[20px] sm:px-[40px] py-[16.5px]  gap-2 rounded-[99px] from-[#28AAE1] via-[#0364B3] to-[#012B4D]">
+          Let’s Get Started
+          <Image
+            src="/arrow-right.svg"
+            width={28}
+            height={28}
+            alt="width"
+          />
+        </button>
+
+        <Image
+          src="/hands.svg"
+          width={471}
+          height={471}
+          alt="logo"
+        />
+      </div>
+        :
+        <ChooseAvatar />
+      }
     </div>
   );
 }
