@@ -20,21 +20,24 @@ export const OnboardingContext = createContext(undefined);
 export const OnboardingProvider = ({ children }) => {
   const [step, setStep] = useState(null);
 
-  const [data, setData] = useState(() => {
-    const stored = localStorage.getItem("formValues");
-    return stored
-      ? JSON.parse(stored)
-      : { photoURLs: [null, null, null, null] };
-  });
+  const [data, setData] = useState({ photoURLs: [null, null, null, null] });
 
-  const [activeStep, setActiveStep] = useState(() => {
+  useEffect(() => {
+    const stored = localStorage.getItem("formValues");
+    if (stored) {
+      setData(JSON.parse(stored));
+    }
+  }, []);
+
+  const [activeStep, setActiveStep] = useState(0); // Safe default
+
+  useEffect(() => {
     const storedStep = localStorage.getItem("activeStep");
 
-    if (step) {
-      return storedStep ? Number(storedStep) : 0;
+    if (step && storedStep) {
+      setActiveStep(Number(storedStep));
     }
-    return 0;
-  });
+  }, [step]);
 
   const setFormValues = (values) => {
     setData((prev) => {
