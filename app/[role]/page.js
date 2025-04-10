@@ -13,35 +13,12 @@ export default function ChatBox() {
       type: "assistant",
       text: "Greeting, I'm here to offer information and support on Substance Use Disorder. Familiar with it?",
       timestamp: "12:30 PM",
-      // date: "Mar 29, 2024",
     },
     {
       id: 2,
       type: "user",
       text: "Hello, I've heard but don’t fully understand Substance Use Disorder.",
       timestamp: "12:31 PM",
-      // date: "Mar 29, 2024",
-    },
-    {
-      id: 3,
-      type: "assistant",
-      text: "Good to seek information. SUD involves problematic substance use causing significant distress. Know signs and symptoms?",
-      timestamp: "12:32 PM",
-      // date: "Mar 29, 2024",
-    },
-    {
-      id: 4,
-      type: "user",
-      text: "Not really, I know withdrawal but unsure about the other signs.",
-      timestamp: "12:33 PM",
-      // date: "Mar 29, 2024",
-    },
-    {
-      id: 5,
-      type: "assistant",
-      text: "I can help. Signs include continued substance use despite problem cause.",
-      timestamp: "12:34 PM",
-      // date: "Mar 29, 2024",
     },
   ]);
 
@@ -91,11 +68,6 @@ export default function ChatBox() {
           hour: "2-digit",
           minute: "2-digit",
         }),
-        // date: new Date().toLocaleDateString("en-US", {
-        //   day: "numeric",
-        //   month: "short",
-        //   year: "numeric",
-        // }),
       };
       setMessages((prev) => [...prev, newAssistantMessage]);
       setLoading(false);
@@ -107,36 +79,7 @@ export default function ChatBox() {
     year: "numeric",
   });
   return (
-    <div className="grid md:grid-cols-[30%,auto] lg:grid-cols-[40%,auto] xl:grid-cols-[30%,auto] ">
-      <div className="px-[15px] lg:px-[20px] xl:px-[40px] py-[40px]">
-        <Image
-          src="/logo.svg"
-          width={182}
-          height={40}
-          className=""
-          alt="logo"
-        />
-
-        <div className="flex flex-col mt-[89px] justify-center items-center">
-          <div className="mb-[80px]">
-            <Image src="/sky.svg" width={132} height={44} alt="sky" />
-          </div>
-          <div>
-            <Image
-              src={`/${params.role}.svg`}
-              width={245}
-              height={329}
-              alt="doctor"
-            />
-          </div>
-
-          <div className="bg-[#F6F6F2] custom-shadow mt-[14px] font-semibold text-[16px] leading-[19px] px-[24px] rounded-[16px] flex justify-center items-center py-[14px] text-center text-[#232C3C]">
-            Just know that I’m here for you. Always.
-          </div>
-
-          <div></div>
-        </div>
-      </div>
+    <div className="grid ">
       <div className="flex px-[20px]  xl:px-[40px] py-[32px] flex-col md:h-screen justify-between bg-white flex-grow">
         <div className="flex items-center pb-[40px] gap-2 px-4">
           <div className="h-[1px] w-[40%] flex-grow bg-[#D9D9D9]"></div>
@@ -233,15 +176,6 @@ export default function ChatBox() {
           >
             <Image src="/send.svg" width={24} height={24} alt="send" />
           </button>
-        </div>
-        <div className="flex items-center gap-[24px] mt-[12px]">
-          <Image src="/A.svg" width={24} height={24} alt="A" />
-          <Image src="/A2.svg" width={24} height={24} alt="A2" />
-          <Image src="/smile.svg" width={24} height={24} alt="smile" />
-          <Image src="/drive.svg" width={24} height={24} alt="drive" />
-          <Image src="/lock.svg" width={24} height={24} alt="lock" />
-          <Image src="/pen.svg" width={24} height={24} alt="pen" />
-          <Image src="/vertical.svg" width={24} height={24} alt="vertical" />
         </div>
       </div>
     </div>

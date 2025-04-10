@@ -12,6 +12,8 @@ export default function Home() {
 
   // Function to handle button click
   const handleClick = () => {
+    router.push("/onboarding/intro");
+    return;
     const randomRoute = routes[Math.floor(Math.random() * routes.length)];
     router.push(randomRoute); // Redirect to the random route
   };
@@ -33,7 +35,7 @@ export default function Home() {
           }}
           className="bg-gradient-to-r flex items-center text-[16px] sm:text-[24px] leading-[29px] font-bold text-white px-[20px] sm:px-[40px] py-[16.5px]  gap-2 rounded-[99px] from-[#28AAE1] via-[#0364B3] to-[#012B4D]"
         >
-          Let’s Get Started
+          Let's Get Started
           <Image src="/arrow-right.svg" width={28} height={28} alt="arrow" />
         </button>
 
