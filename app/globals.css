@@ -7,49 +7,35 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.custom-shadow
-{
-  box-shadow: 1px 2px 14px 0px #1088FF29;
+.custom-shadow {
+  box-shadow: 1px 2px 14px 0px #1088ff29;
 }
-.inner-shadow
-{
-  box-shadow: 0px 4px 68px 8px #FFF5DA3D inset;
+.inner-shadow {
+  box-shadow: 0px 4px 68px 8px #fff5da3d inset;
 
-box-shadow: 0px 2px 24px 0px #24A3DD14;
-
+  box-shadow: 0px 2px 24px 0px #24a3dd14;
 }
 
-.drop-shadow
-{
-  box-shadow: 0px 4px 68px 8px #FFF5DA3D inset;
+.drop-shadow {
+  box-shadow: 0px 4px 68px 8px #fff5da3d inset;
 
-  box-shadow: 0px 2px 24px 12px #E3E3E3;
-  
+  box-shadow: 0px 2px 24px 12px #e3e3e3;
 }
 
-.select-shadow
-{
-  border: 8px solid #1F82C4; /* Single color close to the gradient */
-  border-radius: 16px; 
+.select-shadow {
+  border: 8px solid #1f82c4; /* Single color close to the gradient */
+  border-radius: 16px;
 
-  box-shadow: 0px 6px 24px 0px #1088FF80;
+  box-shadow: 0px 6px 24px 0px #1088ff80;
 }
-.select-shadow::before
-{
-  content: '';
+.select-shadow::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -57,10 +43,13 @@ box-shadow: 0px 2px 24px 0px #24A3DD14;
   bottom: 0;
   border-radius: inherit; /* Match the border radius */
   padding: 8px; /* Border thickness */
-  background: linear-gradient(92.64deg, #28AAE1 -0.72%, #0364B3 50.96%, #012B4D 100.58%);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
+  background: linear-gradient(
+    92.64deg,
+    #28aae1 -0.72%,
+    #0364b3 50.96%,
+    #012b4d 100.58%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   z-index: -1; /* Place it behind the content */
@@ -70,11 +59,10 @@ box-shadow: 0px 2px 24px 0px #24A3DD14;
   border-radius: 16px; /* Match the border radius */
   background: white; /* Inner background color */
   padding: 16px; /* Padding for the inner content */
-
 }
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color:  #EEF2FD;
+  scrollbar-color: #eef2fd;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
