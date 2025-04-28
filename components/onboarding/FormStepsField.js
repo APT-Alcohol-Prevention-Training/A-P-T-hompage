@@ -96,7 +96,7 @@ const FormStepsField = ({
     <>
       <form onSubmit={handleSubmit} className="space-y-6 animate-slideIn">
         <h2 className="text-xl font-bold text-black">{title}</h2>
-
+        
         {renderField()}
 
         {continueButton && (

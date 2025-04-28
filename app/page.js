@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <div className=" px-[32px] md:px-[64px] flex flex-col  pt-[40px] min-h-screen bg-[#F6F6F2]">
-      {clicked && <Image src="/logo2.svg" width={40} height={40} alt="logo" />}
+       <Image src="/logo2.svg" width={80} height={80} alt="logo" />
       <div className="flex flex-col justify-between flex-grow items-center mt-[100px]">
         <p className="text-[32px] leading-[38px] font-semibold text-[#000000] ">
           Welcome to the

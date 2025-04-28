@@ -3,7 +3,7 @@ import React from "react";
 const RadioField = ({ options, selectedValue, onChange }) => {
   return (
     <div>
-      <div className="space-y-4">
+      <div className="space-y-4 ">
         {options?.map((option, i) => (
           <label
             key={i}
@@ -13,7 +13,7 @@ const RadioField = ({ options, selectedValue, onChange }) => {
                          selectedValue === option.value ||
                          (Array.isArray(selectedValue) &&
                            selectedValue.includes(option.value))
-                           ? "border-primary border-[3px] bg-brown-50 scale-105"
+                           ? "border-[#0364B3] border-[3px] bg-brown-50 scale-95 "
                            : ""
                        } relative`}
           >
