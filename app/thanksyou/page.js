@@ -1,29 +1,33 @@
-'use client'
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 const Page = () => {
   const router = useRouter();
 
   const handleRedirect = () => {
     // Redirect user to a different page after thanking them
-    router.push('/');
+    router.push("/");
   };
 
   return (
     <div className="min-h-screen flex justify-center items-center  p-8">
-          <div className="p-4 absolute left-3 top-2">
+      {/* <div className="p-4 absolute left-3 top-2">
                 <Image src="/logo2.svg" width={80} height={80} alt="logo" />
-              </div>
+              </div> */}
       <div className="max-w-xl mx-auto text-center  p-8 ">
-        <h1 className="text-3xl font-semibold text-[#374557] mb-4">Thank You!</h1>
+        <h1 className="text-3xl font-semibold text-[#374557] mb-4">
+          Thank You!
+        </h1>
         <p className="text-lg text-gray-600 mb-6">
-          Congratulations on completing the questionnaire! Your responses have been recorded.
+          Congratulations on completing the questionnaire! Your responses have
+          been recorded.
         </p>
         <p className="text-md text-gray-500 mb-4">
-          We appreciate your time and participation. Based on your answers, we'll provide relevant content and suggestions.
+          We appreciate your time and participation. Based on your answers,
+          we'll provide relevant content and suggestions.
         </p>
-        
+
         <div className="mt-6">
           <button
             onClick={handleRedirect}

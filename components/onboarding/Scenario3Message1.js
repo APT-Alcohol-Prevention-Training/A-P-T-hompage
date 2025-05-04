@@ -1,14 +1,14 @@
-import React from 'react'
-import Image from 'next/image'
+import React from "react";
+import Image from "next/image";
 const Scenario3Message1 = () => {
   return (
     <section className="max-w-2xl mx-auto p-8  mt-8">
-        <div className="p-4 absolute left-3 top-2">
+      {/* <div className="p-4 absolute left-3 top-2">
               <Image src="/logo2.svg" width={80} height={80} alt="logo" />
-            </div>
-         <div className="flex justify-center mb-4">
-                          <Image src="/logo.svg" width={150} height={80} alt="Logo" />
-                        </div>
+            </div> */}
+      <div className="flex justify-center mb-4">
+        <Image src="/logo.svg" width={150} height={80} alt="Logo" />
+      </div>
       {/* Section Heading */}
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
         What You’ll Learn Today:
@@ -32,7 +32,7 @@ const Scenario3Message1 = () => {
           "Drinking more than you planned.",
           "Feeling guilty about drinking.",
           "Drinking to cope with stress or emotions.",
-          "Blacking out or forgetting events while drinking."
+          "Blacking out or forgetting events while drinking.",
         ].map((sign, idx) => (
           <li key={idx} className="flex items-start">
             <span className="mr-2 text-red-600">❌</span>
@@ -50,7 +50,7 @@ const Scenario3Message1 = () => {
         </p>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Scenario3Message1
+export default Scenario3Message1;

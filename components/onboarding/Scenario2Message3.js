@@ -1,16 +1,14 @@
-
-
-import React from 'react'
-import Image from 'next/image'
+import React from "react";
+import Image from "next/image";
 const Scenario2Message3 = () => {
   return (
     <section className="max-w-2xl mx-auto p-8 mt-8">
-        <div className="p-4 absolute left-3 top-2">
+      {/* <div className="p-4 absolute left-3 top-2">
               <Image src="/logo2.svg" width={80} height={80} alt="logo" />
-            </div>
-         <div className="flex justify-center mb-4">
-                          <Image src="/logo.svg" width={150} height={80} alt="Logo" />
-                        </div>
+            </div> */}
+      <div className="flex justify-center mb-4">
+        <Image src="/logo.svg" width={150} height={80} alt="Logo" />
+      </div>
       {/* Section Heading */}
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
         Alternatives to Drinking
@@ -37,7 +35,7 @@ const Scenario2Message3 = () => {
         </li>
       </ul>
     </section>
-  )
-}
+  );
+};
 
-export default Scenario2Message3
+export default Scenario2Message3;

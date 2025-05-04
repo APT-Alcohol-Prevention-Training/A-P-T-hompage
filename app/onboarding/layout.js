@@ -10,12 +10,10 @@ const OnboardingLayout = ({ children }) => {
   const isBasicInformation = activeStep >= 0 && activeStep <= 1;
   return (
     <>
-      <div className="p-4 absolute left-3 top-2">
+      {/* <div className="p-4 absolute left-3 top-2">
         <Image src="/logo2.svg" width={80} height={80} alt="logo" />
-      </div>
-      {" "}
+      </div> */}{" "}
       <div className="w-[90%] mx-auto max-w-2xl mt-[100px]">
-      
         <ProgressBar />
         {activeStep < 7 && (
           <div className="my-[35px]">

@@ -9,13 +9,13 @@ const RadioField = ({ options, selectedValue, onChange }) => {
             key={i}
             onClick={() => onChange(option.value)}
             className={`flex items-center capitalize w-full min-h-[75px] p-4 border-[2px] rounded-[12px] transition-all cursor-pointer duration-200
-                       border-gray-300 hover:border-primary  ${
-                         selectedValue === option.value ||
-                         (Array.isArray(selectedValue) &&
-                           selectedValue.includes(option.value))
-                           ? "border-[#0364B3] border-[3px] bg-brown-50 scale-95 "
-                           : ""
-                       } relative`}
+                        hover:border-primary  ${
+                          selectedValue === option.value ||
+                          (Array.isArray(selectedValue) &&
+                            selectedValue.includes(option.value))
+                            ? "border-[#0364B3] border-[3px] bg-brown-50 scale-98 "
+                            : ""
+                        } relative`}
           >
             <span className="text-gray-600">{option.label}</span>
           </label>
