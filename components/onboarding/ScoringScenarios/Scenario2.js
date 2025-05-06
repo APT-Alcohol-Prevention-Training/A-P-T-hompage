@@ -1,11 +1,11 @@
-'use client'
-import React, { useState, useEffect } from 'react';
-import Scenario2Message1 from '../Scenario2Message1';
-import Scenario2Message2 from '../Scenario2Message2';
-import Scenario2Message3 from '../Scenario2Message3';
-import Question from '../Question'; // Your dynamic Question component
-import Button from '@/components/Button';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState, useEffect } from "react";
+import Scenario2Message1 from "../Scenario2Message1";
+import Scenario2Message2 from "../Scenario2Message2";
+import Scenario2Message3 from "../Scenario2Message3";
+import Question from "../Question"; // Your dynamic Question component
+import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 const Scenario2 = () => {
   const [showMessage1, setShowMessage1] = useState(true);
   const [showMessage2, setShowMessage2] = useState(false);
@@ -14,24 +14,24 @@ const Scenario2 = () => {
   const [showQuestion2, setShowQuestion2] = useState(false);
   const [showQuestion3, setShowQuestion3] = useState(false);
   const [showContinueButton, setShowContinueButton] = useState(false); // To control when to show the continue button
-  const router=useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (showMessage1) {
       const timer = setTimeout(() => {
         setShowContinueButton(true); // Show Continue button after 15 seconds for Message 1
-      }, 15000); // 15 seconds delay for Message 1
+      }, 7000); // 15 seconds delay for Message 1
       return () => clearTimeout(timer);
     }
     if (showMessage2) {
       const timer = setTimeout(() => {
         setShowContinueButton(true); // Show Continue button after 15 seconds for Message 2
-      }, 15000); // 15 seconds delay for Message 2
+      }, 7000); // 15 seconds delay for Message 2
       return () => clearTimeout(timer);
     }
     if (showMessage3) {
       const timer = setTimeout(() => {
         setShowContinueButton(true); // Show Continue button after 15 seconds for Message 3
-      }, 15000); // 15 seconds delay for Message 3
+      }, 7000); // 15 seconds delay for Message 3
       return () => clearTimeout(timer);
     }
   }, [showMessage1, showMessage2, showMessage3]);
@@ -57,10 +57,8 @@ const Scenario2 = () => {
       setShowMessage3(false);
       setShowQuestion3(true);
       setShowContinueButton(false); // Reset continue button after click
-    }
-    else
-    {
-      router.push('/thanksyou')
+    } else {
+      router.push("/thanksyou");
     }
   };
 
@@ -73,11 +71,7 @@ const Scenario2 = () => {
       {showQuestion1 && (
         <Question
           questionText="How long does it take for your body to process ONE standard drink?"
-          options={[
-            "15 minutes",
-            "1 hour",
-            "3 hours",
-          ]}
+          options={["15 minutes", "1 hour", "3 hours"]}
           correctAnswerIndex={1}
           explanationCorrect="Yes! On average, your liver processes about one standard drink per hour."
           explanationIncorrect="Actually, it takes about one hour per drink. If you drink multiple drinks in a short period, the alcohol stays in your system longer, increasing the risk of impairment."
@@ -126,18 +120,21 @@ const Scenario2 = () => {
       )}
 
       {/* Continue Button */}
-      {showContinueButton && !showQuestion1  && !showQuestion2  && !showQuestion3 && (
-        <div className='max-w-2xl mx-auto mt-3'>
-        <Button onClick={handleContinue} className="px-4 py-2 bg-blue-500 text-white rounded">
-          Continue
-        </Button>
-        </div>
-      )}
+      {showContinueButton &&
+        !showQuestion1 &&
+        !showQuestion2 &&
+        !showQuestion3 && (
+          <div className="max-w-2xl mx-auto mt-3">
+            <Button
+              onClick={handleContinue}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Continue
+            </Button>
+          </div>
+        )}
     </div>
   );
 };
 
 export default Scenario2;
-
-
-

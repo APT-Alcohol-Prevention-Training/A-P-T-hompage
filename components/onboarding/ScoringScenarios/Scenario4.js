@@ -1,11 +1,11 @@
-'use client'
-import React, { useState, useEffect } from 'react';
-import Scenario4Message1 from '../Scenario4Message1';
-import Scenario4Message2 from '../Scenario4Message2';
-import Scenario4Message3 from '../Scenario4Message3';
-import Question from '../Question'; // Your dynamic Question component
-import Button from '@/components/Button';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState, useEffect } from "react";
+import Scenario4Message1 from "../Scenario4Message1";
+import Scenario4Message2 from "../Scenario4Message2";
+import Scenario4Message3 from "../Scenario4Message3";
+import Question from "../Question"; // Your dynamic Question component
+import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 
 const Scenario4 = () => {
   const [showMessage1, setShowMessage1] = useState(true);
@@ -15,24 +15,24 @@ const Scenario4 = () => {
   const [showQuestion2, setShowQuestion2] = useState(false);
   const [showQuestion3, setShowQuestion3] = useState(false);
   const [showContinueButton, setShowContinueButton] = useState(false);
-  const router=useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (showMessage1) {
       const timer = setTimeout(() => {
         setShowContinueButton(true);
-      }, 15000); // 15 seconds delay for Message 1
+      }, 7000); // 15 seconds delay for Message 1
       return () => clearTimeout(timer);
     }
     if (showMessage2) {
       const timer = setTimeout(() => {
         setShowContinueButton(true);
-      }, 15000); // 15 seconds delay for Message 2
+      }, 7000); // 15 seconds delay for Message 2
       return () => clearTimeout(timer);
     }
     if (showMessage3) {
       const timer = setTimeout(() => {
         setShowContinueButton(true);
-      }, 15000); // 15 seconds delay for Message 3
+      }, 7000); // 15 seconds delay for Message 3
       return () => clearTimeout(timer);
     }
   }, [showMessage1, showMessage2, showMessage3]);
@@ -58,10 +58,8 @@ const Scenario4 = () => {
       setShowMessage3(false);
       setShowQuestion3(true);
       setShowContinueButton(false);
-    }
-    else
-    {
-        router.push('/thanksyou')
+    } else {
+      router.push("/thanksyou");
     }
   };
 
@@ -127,13 +125,19 @@ const Scenario4 = () => {
       )}
 
       {/* Continue Button */}
-      {showContinueButton && !showQuestion1  && !showQuestion2  && !showQuestion3 && (
-        <div className='max-w-2xl mx-auto mt-3'>
-        <Button onClick={handleContinue} className="px-4 py-2 bg-blue-500 text-white rounded">
-          Continue
-        </Button>
-        </div>
-      )}
+      {showContinueButton &&
+        !showQuestion1 &&
+        !showQuestion2 &&
+        !showQuestion3 && (
+          <div className="max-w-2xl mx-auto mt-3">
+            <Button
+              onClick={handleContinue}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Continue
+            </Button>
+          </div>
+        )}
     </div>
   );
 };
