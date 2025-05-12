@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import Scenario1Message1 from "../Scenario1Message1";
 import Scenario1Message2 from "../Scenario1Message2";
@@ -11,9 +11,8 @@ const Scenario1 = () => {
   const [showQuestion1, setShowQuestion1] = useState(false);
   const [showQuestion2, setShowQuestion2] = useState(false);
   const [showContinueButton, setShowContinueButton] = useState(false); // New state for showing Continue button
-  const router=useRouter()
+  const router = useRouter();
   useEffect(() => {
-   
     if (showMessage1) {
       const timer = setTimeout(() => {
         setShowContinueButton(true); // Show Continue button after 15 seconds
@@ -41,10 +40,8 @@ const Scenario1 = () => {
       setShowMessage2(false);
       setShowQuestion2(true);
       setShowContinueButton(false); // Reset the Continue button after click
-    }
-    else 
-    {
-    router.push('/thanskyou')
+    } else {
+      router.push("/thanksyou");
     }
   };
 
@@ -88,11 +85,14 @@ const Scenario1 = () => {
       )}
 
       {/* Continue Button */}
-      {showContinueButton && !showQuestion1  && !showQuestion2 && (
-        <div className='max-w-2xl mx-auto mt-3'>
-        <Button onClick={handleContinue} className="px-4 py-2 bg-blue-500 text-white rounded">
-          Continue
-        </Button>
+      {showContinueButton && !showQuestion1 && !showQuestion2 && (
+        <div className="max-w-2xl mx-auto mt-3">
+          <Button
+            onClick={handleContinue}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Continue
+          </Button>
         </div>
       )}
     </div>
