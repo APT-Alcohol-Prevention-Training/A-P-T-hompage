@@ -242,9 +242,9 @@ export const formFields = [
     ],
   },
   {
-    title: "Results & Recommendations",
+    title: "Get Ready to Begin",
     description:
-      "Based on your answers, your risk level will be determined. Below are the recommendations tailored to your score.",
+      "Now that you've completed the initial questions, your personalized alcohol prevention training is about to begin. Click below to get started.",
     fieldName: "results",
     inputType: "content",
     nextField: null,

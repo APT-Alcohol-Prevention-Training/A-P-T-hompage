@@ -20,22 +20,20 @@ const Page = () => {
           Thank You!
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          Congratulations on completing the questionnaire! Your responses have
-          been recorded.
+          {`You’ve just completed a short alcohol prevention training.`}
         </p>
         <p className="text-md text-gray-500 mb-4">
-          We appreciate your time and participation. Based on your answers,
-          we'll provide relevant content and suggestions.
+          {`We appreciate your time and participation. If you found this helpful, we hope you’ll consider joining future sessions to explore more content and build on what you’ve learned.`}
         </p>
 
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <button
             onClick={handleRedirect}
             className="px-6 py-3 bg-gradient-to-r from-[#28AAE1] via-[#0364B3] to-[#012B4D] hover:bg-gray-800 text-white rounded-md transition duration-300"
           >
             Go to Home
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

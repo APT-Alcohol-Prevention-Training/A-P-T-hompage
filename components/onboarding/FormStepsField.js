@@ -18,6 +18,8 @@ const FormStepsField = ({
 }) => {
   const { activeStep, setFormValues, goToNextStep, data } = useOnboarding();
 
+  console.log("active step", activeStep);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     goToNextStep();
@@ -96,12 +98,14 @@ const FormStepsField = ({
     <>
       <form onSubmit={handleSubmit} className="space-y-6 animate-slideIn">
         <h2 className="text-xl font-bold text-black">{title}</h2>
-        
+
         {renderField()}
 
         {continueButton && (
           <div className="flex flex-col items-center">
-            <Button type="submit">Continue</Button>
+            <Button type="submit">
+              {activeStep === 14 ? "Let’s Begin" : "Continue"}
+            </Button>
           </div>
         )}
 
