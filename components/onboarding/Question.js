@@ -28,9 +28,6 @@ export default function Question({
 
   return (
     <div className="max-w-[600px] mx-auto p-6 mt-8">
-      {/* <div className="p-4 absolute left-3 top-2">
-              <Image src="/logo2.svg" width={80} height={80} alt="logo" />
-            </div> */}
       {/* Logo */}
       <div className="flex justify-center mb-4">
         <Image src={logoSrc} width={120} height={80} alt="Logo" />
