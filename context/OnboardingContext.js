@@ -1,10 +1,5 @@
 "use client";
 
-import { formSteps } from "@/misc/constants";
-import { formFields } from "@/misc/onboardingFields";
-import { routes } from "@/misc/routes";
-import next from "next";
-import { useRouter, useSearchParams } from "next/navigation";
 import React, {
   useState,
   useEffect,
@@ -12,8 +7,10 @@ import React, {
   createContext,
   useContext,
 } from "react";
-
-console.log("form Data", FormData);
+import { formSteps } from "@/misc/constants";
+import { formFields } from "@/misc/onboardingFields";
+import { routes } from "@/misc/routes";
+import { useRouter } from "next/navigation";
 
 export const OnboardingContext = createContext(undefined);
 
@@ -67,6 +64,7 @@ export const OnboardingProvider = ({ children }) => {
 
   const goToNextStep = () => {
     const currentStepData = formFields.find((s) => s.fieldName === step);
+    
     if (currentStepData?.last === true) {
       const totalPoints = formFields.reduce((acc, field) => {
         const selectedOption = field.options?.find(
@@ -76,21 +74,28 @@ export const OnboardingProvider = ({ children }) => {
       }, 0);
       localStorage.setItem("totalPoints", totalPoints.toString());
       router.push(`/results`);
+      return; 
     }
-    console.log("currentStepData", currentStepData);
+
+
     let nextStep = currentStepData?.nextField;
-    if (data[currentStepData.fieldName]) {
-      const selectedOption = currentStepData.options?.find(
+
+    
+    if (data[currentStepData?.fieldName]) {
+      const selectedOption = currentStepData?.options?.find(
         (option) => option.value === data[currentStepData.fieldName]
       );
-      if (selectedOption) {
+      if (selectedOption?.nextField) {
         nextStep = selectedOption.nextField;
       }
     }
-    if (!nextStep) {
-      nextStep = data[currentStep].nextField;
+
+    
+    if (!nextStep && currentStepData?.nextField) {
+      nextStep = currentStepData.nextField;
     }
-    console.log("nextStep", nextStep);
+
+   
     if (nextStep) {
       router.push(`${routes.onboarding}/${nextStep}`);
       const nextStepIndex = formSteps.findIndex((step) => step === nextStep);
@@ -98,13 +103,10 @@ export const OnboardingProvider = ({ children }) => {
         console.error(`Step "${nextStep}" not found in formSteps.`);
         return;
       }
-      // Update the active step in local storage
       localStorage.setItem("activeStep", nextStepIndex.toString());
       setActiveStep(nextStepIndex);
-      handleNext(nextStep); // Notify parent component
+      handleNext(nextStep);
     } else {
-      // Handle final submission or navigate to a confirmation page
-      console.log("Form submitted with values:", data);
       router.push(`${routes.onboarding}/confirmation`);
     }
   };

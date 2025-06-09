@@ -9,23 +9,23 @@ const Page = () => {
   const [scenario, setScenario] = useState(null);
 
   useEffect(() => {
-    // Get the totalPoints value from localStorage
+    
     const totalPoints = parseInt(localStorage.getItem('totalPoints'), 10) || 0;
 
-    // Based on the totalPoints, decide which scenario to show
+    
     if (totalPoints >= 0 && totalPoints <= 3) {
       setScenario(<Scenario1 />);
     } else if (totalPoints >= 4 && totalPoints <= 7) {
       setScenario(<Scenario2 />);
     } else if (totalPoints >= 8 && totalPoints <= 12) {
+     
       setScenario(<Scenario3 />);
     } else if (totalPoints >= 13) {
       setScenario(<Scenario4 />);
     }
-  }, []); // Empty dependency array to run on initial render
-
+  }, []); 
   return (
-    <div>
+    <div className='mt-16'>
       {scenario}
     </div>
   );

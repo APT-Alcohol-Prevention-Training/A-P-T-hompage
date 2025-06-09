@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { OnboardingProvider } from "@/context/OnboardingContext";
+import Image from "next/image";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +24,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div className=" absolute left-6 top-6">
+          <Image src="/logo.svg" width={150} height={80} alt="Logo" />
+        </div>
         <OnboardingProvider>{children}</OnboardingProvider>
       </body>
     </html>

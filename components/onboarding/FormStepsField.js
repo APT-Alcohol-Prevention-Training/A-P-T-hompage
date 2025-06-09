@@ -18,7 +18,7 @@ const FormStepsField = ({
 }) => {
   const { activeStep, setFormValues, goToNextStep, data } = useOnboarding();
 
-  console.log("active step", activeStep);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,7 +96,7 @@ const FormStepsField = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6 animate-slideIn">
+      <form onSubmit={handleSubmit} className="space-y-6 mb-4 animate-slideIn">
         <h2 className="text-xl font-bold text-black">{title}</h2>
 
         {renderField()}

@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import { ContinueButton } from "@/components/ui/ContinueButton";
 import Heading from "@/components/Heading";

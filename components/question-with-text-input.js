@@ -2,7 +2,6 @@ import { Input } from "@/components/ui/input";
 import { ContinueButton } from "@/components/ui/ContinueButton";
 import { motion, AnimatePresence } from "framer-motion";
 import Heading from "@/components/Heading";
-import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
 
 const TRANSITION_DURATION = 0.2;

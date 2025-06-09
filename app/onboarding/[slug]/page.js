@@ -15,14 +15,10 @@ function Page() {
     setStep(slug);
     setCurrentStep(slug);
     const stepIndex = formFields.findIndex((f) => f.fieldName === slug);
-    console.log("stepIndex", stepIndex);
     setActiveStep(stepIndex > -1 ? stepIndex : 0);
   }, [slug, setStep]);
 
-  console.log("currentStep", currentStep);
-
   const field = formFields.find((f) => f.fieldName === currentStep);
-  console.log("field", field);
   if (field?.inputType) {
     return <FormStepsField {...field} />;
   }
