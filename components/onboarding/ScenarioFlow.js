@@ -39,7 +39,7 @@ const ScenarioFlow = ({ scenarioNumber, messages, questions }) => {
       setCurrentStep(prev => prev + 1);
       setShowContinueButton(false);
     } else {
-      router.push("/thanksyou");
+      router.push("/training-complete");
     }
   };
 

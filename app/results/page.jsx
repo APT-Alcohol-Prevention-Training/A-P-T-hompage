@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import Scenario1 from '@/components/onboarding/ScoringScenarios/Scenario1';
-import Scenario2 from '@/components/onboarding/ScoringScenarios/Scenario2';
-import Scenario3 from '@/components/onboarding/ScoringScenarios/Scenario3';
-import Scenario4 from '@/components/onboarding/ScoringScenarios/Scenario4';
+import Scenario1 from '@/components/onboarding/scoring-scenarios/Scenario1';
+import Scenario2 from '@/components/onboarding/scoring-scenarios/Scenario2';
+import Scenario3 from '@/components/onboarding/scoring-scenarios/Scenario3';
+import Scenario4 from '@/components/onboarding/scoring-scenarios/Scenario4';
 
 const Page = () => {
   const [scenario, setScenario] = useState(null);

@@ -2,11 +2,11 @@
 
 import { useOnboarding } from "@/context/OnboardingContext";
 import React, { FormEvent, useEffect, useState } from "react";
-import RadioField from "./inputFields/RadioField";
+import RadioField from "./input-fields/RadioField";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import TextField from "./inputFields/TextField";
-import NumberField from "./inputFields/NumberField";
-import DateField from "./inputFields/DateField";
+import TextField from "./input-fields/TextField";
+import NumberField from "./input-fields/NumberField";
+import DateField from "./input-fields/DateField";
 import Button from "../Button";
 
 const FormStepsField = ({
@@ -104,7 +104,7 @@ const FormStepsField = ({
         {continueButton && (
           <div className="flex flex-col items-center">
             <Button type="submit">
-              {activeStep === 14 ? "Let’s Begin" : "Continue"}
+              {activeStep === 14 ? "Let's Begin" : "Continue"}
             </Button>
           </div>
         )}
