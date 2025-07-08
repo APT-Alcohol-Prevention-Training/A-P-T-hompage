@@ -64,7 +64,7 @@ export const OnboardingProvider = ({ children }) => {
 
   const goToNextStep = () => {
     const currentStepData = formFields.find((s) => s.fieldName === step);
-    
+
     if (currentStepData?.last === true) {
       const totalPoints = formFields.reduce((acc, field) => {
         const selectedOption = field.options?.find(
@@ -72,15 +72,14 @@ export const OnboardingProvider = ({ children }) => {
         );
         return acc + (selectedOption ? selectedOption.points : 0);
       }, 0);
+
       localStorage.setItem("totalPoints", totalPoints.toString());
       router.push(`/results`);
-      return; 
+      return;
     }
-
 
     let nextStep = currentStepData?.nextField;
 
-    
     if (data[currentStepData?.fieldName]) {
       const selectedOption = currentStepData?.options?.find(
         (option) => option.value === data[currentStepData.fieldName]
@@ -90,12 +89,10 @@ export const OnboardingProvider = ({ children }) => {
       }
     }
 
-    
     if (!nextStep && currentStepData?.nextField) {
       nextStep = currentStepData.nextField;
     }
 
-   
     if (nextStep) {
       router.push(`${routes.onboarding}/${nextStep}`);
       const nextStepIndex = formSteps.findIndex((step) => step === nextStep);
@@ -115,7 +112,7 @@ export const OnboardingProvider = ({ children }) => {
     const prevStepIndex = activeStep - 1;
     const prevStep = formSteps[prevStepIndex];
     if (prevStep) {
-      router.push(`${routes.onboarding}/${prevStep}`);
+      window.history.back();
       setActiveStep(prevStepIndex);
     }
   };
