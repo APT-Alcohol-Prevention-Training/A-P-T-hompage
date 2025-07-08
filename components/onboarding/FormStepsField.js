@@ -8,6 +8,7 @@ import TextField from "./input-fields/TextField";
 import NumberField from "./input-fields/NumberField";
 import DateField from "./input-fields/DateField";
 import Button from "../Button";
+import { formSteps } from "@/misc/constants";
 
 const FormStepsField = ({
   inputType,
@@ -16,9 +17,8 @@ const FormStepsField = ({
   options,
   fieldName,
 }) => {
-  const { activeStep, setFormValues, goToNextStep, data } = useOnboarding();
-
-
+  const { activeStep, setFormValues, goToNextStep, data, handleBack } =
+    useOnboarding();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -112,7 +112,10 @@ const FormStepsField = ({
         {activeStep > 0 && (
           <h3
             className="flex items-center gap-2 mt-2 cursor-pointer text-blue-500 cusrsor-pointer"
-            onClick={() => window.history.back()}
+            onClick={() => {
+              // window.history.back();
+              handleBack();
+            }}
           >
             <FaArrowLeftLong /> Back
           </h3>
