@@ -73,7 +73,21 @@ export const OnboardingProvider = ({ children }) => {
         return acc + (selectedOption ? selectedOption.points : 0);
       }, 0);
 
+
+      // Store total points for later use
       localStorage.setItem("totalPoints", totalPoints.toString());
+
+      // Send survey answers to backend for logging (fire-and-forget)
+      try {
+        fetch("/api/survey", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answers: data }),
+        });
+      } catch (err) {
+        console.error("Failed to log survey response", err);
+      }
+
       router.push(`/results`);
       return;
     }
