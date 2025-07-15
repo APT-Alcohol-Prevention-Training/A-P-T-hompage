@@ -31,8 +31,12 @@ export async function POST(request) {
     const { answers = {} } = await request.json();
 
     // Get client IP (works behind proxies too)
+    // Attempt to detect client IP (works behind most proxies)
     const ipHeader =
-      request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "";
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      request.headers.get("cf-connecting-ip") || // Cloudflare
+      "";
     const ip = ipHeader.split(",")[0].trim() || "unknown";
 
     const timestamp = new Date().toISOString();
@@ -40,8 +44,13 @@ export async function POST(request) {
     // Build CSV line: timestamp,ip,...answers
     const csvRow = `${timestamp},${ip},${answersToCsvRow(answers)}\n`;
 
-    // Append to CSV file (create if not exists)
-    fs.appendFileSync(CSV_PATH, csvRow, { encoding: "utf8" });
+    // If file doesn't exist or empty, write header first
+    if (!fs.existsSync(CSV_PATH) || fs.statSync(CSV_PATH).size === 0) {
+      const header = `timestamp,ip,${Object.keys(answers).sort().join(',')}\n`;
+      fs.writeFileSync(CSV_PATH, header + csvRow, { encoding: 'utf8' });
+    } else {
+      fs.appendFileSync(CSV_PATH, csvRow, { encoding: 'utf8' });
+    }
 
     return NextResponse.json({ status: "ok" });
   } catch (err) {
@@ -51,7 +60,30 @@ export async function POST(request) {
 }
 
 // GET: download CSV file
-export async function GET() {
+export async function GET(request) {
+  // Basic auth password stored in env CSV_DOWNLOAD_PASSWORD
+  const authHeader = request.headers.get("authorization") || "";
+  const passwordFromEnv = process.env.CSV_DOWNLOAD_PASSWORD;
+  if (!passwordFromEnv) {
+    return new Response("Server not configured", { status: 500 });
+  }
+  const valid = (() => {
+    if (!authHeader.startsWith("Basic ")) return false;
+    try {
+      const decoded = Buffer.from(authHeader.replace("Basic ", ""), "base64").toString();
+      // decoded format: username:password, we ignore username
+      const [, pass] = decoded.split(":");
+      return pass === passwordFromEnv;
+    } catch {
+      return false;
+    }
+  })();
+  if (!valid) {
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: { "WWW-Authenticate": "Basic realm=\"survey\"" },
+    });
+  }
   try {
     if (!fs.existsSync(CSV_PATH)) {
       return new Response("CSV not found", { status: 404 });

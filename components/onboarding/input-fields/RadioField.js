@@ -7,7 +7,7 @@ const RadioField = ({ options, selectedValue, onChange }) => {
         {options?.map((option, i) => (
           <label
             key={i}
-            onClick={() => onChange(option.value)}
+            onClick={() => onChange && onChange(option.value)}
             className={`flex items-center capitalize w-full min-h-[75px] p-4 border-[2px] rounded-[12px] transition-all cursor-pointer duration-200
                         hover:border-primary  ${
                           selectedValue === option.value ||

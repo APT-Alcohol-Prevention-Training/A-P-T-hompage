@@ -8,7 +8,7 @@ function ProgressBar() {
   return (
     <div className="mb-[30px]">
       <div className=" flex items-center gap-4 p-2 px-0 w-full">
-        <div className="w-full rounded-full ]">
+        <div className="w-full rounded-full">
           <div
             className="h-[20px] min-w-[15px] shadow-[0_0_10px_0_#00000000] bg-gradient-to-r from-[#28AAE1] via-[#0364B3] to-[#012B4D] rounded-full w-full transition-all duration-700"
             style={{ maxWidth: `${percentage}%` }}

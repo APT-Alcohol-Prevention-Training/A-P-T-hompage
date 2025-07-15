@@ -1,5 +1,19 @@
 export const formFields = [
   {
+    title: "Section Code Verification",
+    description:
+      "Please enter the 6-character section code you received from the other website.",
+    fieldName: "sectionCode",
+    inputType: "text",
+    placeholder: "Enter 6-character code",
+    validation: {
+      required: true,
+      pattern: /^[A-Za-z0-9]{6}$/,
+      message: "Please enter a valid 6-character code (letters and numbers only)"
+    },
+    nextField: "intro",
+  },
+  {
     title: "Welcome to the Alcohol Prevention Training",
     description:
       "This training will help you learn more about alcohol, its effects, and how to make safer choices. Let's start with a few questions.",
