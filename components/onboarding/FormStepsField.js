@@ -19,12 +19,13 @@ const FormStepsField = ({
   validation,
   placeholder,
 }) => {
-  const { activeStep, setFormValues, goToNextStep, data, handleBack } = useOnboarding();
+  const { activeStep, setFormValues, goToNextStep, data, handleBack } =
+    useOnboarding();
   const [validationError, setValidationError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Validate section code if needed
     if (fieldName === "sectionCode" && validation) {
       if (!inputValue) {
@@ -36,7 +37,7 @@ const FormStepsField = ({
         return;
       }
     }
-    
+
     goToNextStep();
   };
 
@@ -74,7 +75,13 @@ const FormStepsField = ({
 
     switch (inputType) {
       case "text":
-        return <TextField {...fieldProps} value={String(inputValue)} placeholder={placeholder} />;
+        return (
+          <TextField
+            {...fieldProps}
+            value={String(inputValue)}
+            placeholder={placeholder}
+          />
+        );
       case "number":
         return (
           <NumberField
@@ -116,7 +123,7 @@ const FormStepsField = ({
         <h2 className="text-xl font-bold text-black">{title}</h2>
 
         {renderField()}
-        
+
         {validationError && (
           <p className="text-red-500 text-sm mt-2">{validationError}</p>
         )}
