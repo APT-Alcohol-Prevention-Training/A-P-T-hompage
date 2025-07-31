@@ -3,14 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-inter: "Inter", sans-serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
+}
+
+.box-shadow {
+  box-shadow: 0px 1px 3px 0px #19213d1a;
+}
+
+.btn-linear-gradient {
+  background: linear-gradient(
+    92.06deg,
+    #28aae1 -19.43%,
+    #0364b3 51.58%,
+    #012b4d 119.74%
+  );
+}
+
+.btn-shadow {
+  box-shadow: 0px 2.63px 1.31px 0px #ffffff38 inset,
+    0px -2.63px 0.39px 0px #0e387d2e inset, 0px 2.63px 6.56px 0px #1458c92b;
 }
 
 .custom-shadow {

@@ -7,16 +7,15 @@ import React, {
   createContext,
   useContext,
 } from "react";
-import { formSteps } from "@/misc/constants";
-import { formFields } from "@/misc/onboardingFields";
-import { routes } from "@/misc/routes";
+import { formSteps } from "../misc/constants";
+import { formFields } from "../misc/onboardingFields";
+import { routes } from "../misc/routes";
 import { useRouter } from "next/navigation";
 
 export const OnboardingContext = createContext(undefined);
 
 export const OnboardingProvider = ({ children }) => {
   const [step, setStep] = useState(null);
-
   const [data, setData] = useState({ photoURLs: [null, null, null, null] });
 
   useEffect(() => {
@@ -88,7 +87,7 @@ export const OnboardingProvider = ({ children }) => {
       }
 
       router.push(`/results`);
-      return; 
+      return;
     }
 
     let nextStep = currentStepData?.nextField;
