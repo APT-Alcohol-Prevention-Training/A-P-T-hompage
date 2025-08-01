@@ -2,9 +2,9 @@
 
 import React, { useEffect } from "react";
 import { formFields } from "@/misc/onboardingFields";
-import FormStepsField from "@/components/onboarding/FormStepsField";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useParams } from "next/navigation";
+import FormStepsField from "@/components/onboarding/FormStepsField";
 
 function Page() {
   const { slug } = useParams();
