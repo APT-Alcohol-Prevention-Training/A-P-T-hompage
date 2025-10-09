@@ -57,6 +57,7 @@ const ScenarioFlow = ({ scenarioNumber, messages, questions }) => {
           options={question.options}
           correctAnswerIndex={question.correctAnswerIndex}
           correctAnswerIndexes={question.correctAnswerIndexes}
+          tip={question.tip}
           explanationCorrect={question.explanationCorrect}
           explanationIncorrect={question.explanationIncorrect}
           optionFeedback={question.optionFeedback}

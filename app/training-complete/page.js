@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/Button";
 
 const generateCode = () => {
   if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
@@ -12,16 +13,53 @@ const generateCode = () => {
       ""
     );
   }
-  return Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6).padEnd(6, "0");
+  return Math.random()
+    .toString(36)
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 6)
+    .padEnd(6, "0");
 };
+
+const encouragementMessage =
+  "You're not alone in making healthy choices. It's okay to take small steps, ask for help, and keep practicing.";
+
+const completionSteps = [
+  "Please close this browser tab to exit the training.",
+  "Return to the original survey browser where you started.",
+  "Please enter the following completion code:",
+];
 
 const Page = () => {
   const router = useRouter();
   const [completionCode, setCompletionCode] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
+  const [introCountdown, setIntroCountdown] = useState(3);
+  const [showContinue, setShowContinue] = useState(false);
+  const [showCompletionCard, setShowCompletionCard] = useState(false);
 
   useEffect(() => {
     setCompletionCode(generateCode());
+  }, []);
+
+  useEffect(() => {
+    setIntroCountdown(3);
+    const timer = setTimeout(() => {
+      setShowContinue(true);
+    }, 3000);
+    const interval = setInterval(() => {
+      setIntroCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleCopy = useCallback(async () => {
@@ -38,48 +76,68 @@ const Page = () => {
     router.push("/");
   };
 
+  const handleContinue = () => {
+    setShowCompletionCard(true);
+  };
+
   return (
     <div className="min-h-screen flex justify-center items-center p-8">
-      <div className="max-w-xl mx-auto text-center p-8">
-        <h1 className="text-3xl font-semibold text-[#374557] mb-4">
-          Thank You!
-        </h1>
-        <p className="text-lg text-gray-600 mb-6">
-          {`You've just completed a short alcohol prevention training.`}
-        </p>
-        <p className="text-md text-gray-500 mb-6">
-          {`We appreciate your time and participation. If you found this helpful, we hope you'll consider joining future sessions to explore more content and build on what you've learned.`}
-        </p>
-
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-3">
-            Your 6-digit verification code
-          </h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <div className="font-mono text-2xl tracking-widest rounded-md border border-gray-200 bg-gray-50 px-6 py-2 text-gray-900">
-              {completionCode}
-            </div>
-            <button
-              onClick={handleCopy}
-              className="px-4 py-2 bg-[#0364B3] text-white rounded-md shadow hover:bg-[#024d89] transition"
-              type="button"
-            >
-              Copy Code
-            </button>
+      <div className="max-w-xl mx-auto text-center p-8 space-y-8">
+        {!showCompletionCard && (
+          <div className="space-y-4">
+            <h1 className="text-2xl font-semibold text-[#374557]">
+              You're not alone in making healthy choices.
+            </h1>
+            <p className="text-gray-700">{encouragementMessage}</p>
+            {!showContinue && (
+              <div className="text-sm text-gray-500">
+                Continue button will appear in {introCountdown} seconds...
+              </div>
+            )}
+            {showContinue && (
+              <div className="flex justify-center">
+                <Button onClick={handleContinue}>Continue</Button>
+              </div>
+            )}
           </div>
-          {copyMessage && (
-            <p className="mt-2 text-sm text-gray-600">{copyMessage}</p>
-          )}
-        </div>
+        )}
 
-        <div className="mt-6">
-          <button
-            onClick={handleRedirect}
-            className="px-6 py-3 bg-gradient-to-r from-[#28AAE1] via-[#0364B3] to-[#012B4D] hover:bg-gray-800 text-white rounded-md transition duration-300"
-          >
-            Go to Home
-          </button>
-        </div>
+        {showCompletionCard && (
+          <div className="space-y-6">
+            <div>
+              <p className="text-2xl mb-2">🎉 You’ve completed the training!</p>
+              <p className="text-gray-700">
+                Thank you for your time and thoughtful participation.
+              </p>
+            </div>
+            <div className="space-y-3 text-left bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <p className="font-semibold text-gray-800">To wrap things up:</p>
+              <ol className="list-decimal list-inside space-y-2 text-gray-700">
+                {completionSteps.slice(0, 2).map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+                <li>
+                  {completionSteps[2]}
+                  <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="font-mono text-xl tracking-widest rounded-md border border-gray-200 bg-white px-4 py-2 text-gray-900">
+                      {completionCode}
+                    </div>
+                    <Button onClick={handleCopy}>Copy Code</Button>
+                  </div>
+                  {copyMessage && (
+                    <p className="mt-2 text-sm text-gray-600">{copyMessage}</p>
+                  )}
+                </li>
+              </ol>
+            </div>
+            <div className="text-left space-y-2">
+              <p className="text-gray-700">
+                When you’re ready, you can return to the home screen.
+              </p>
+              <Button onClick={handleRedirect}>Go to Home</Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
