@@ -12,6 +12,7 @@ export default function Question({
   options,
   correctAnswerIndex,
   correctAnswerIndexes,
+  tip,
   explanationCorrect,
   explanationIncorrect,
   optionFeedback = [],
@@ -51,6 +52,11 @@ export default function Question({
       </div>
 
       {/* Question */}
+      {!answered && tip && (
+        <div className="mb-5 border-l-4 border-purple-500 bg-purple-50 px-4 py-3 text-sm text-gray-800">
+          {tip}
+        </div>
+      )}
       <h2 className="text-xl font-bold mb-6">{questionText}</h2>
 
       {/* Options */}
@@ -107,6 +113,7 @@ Question.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   correctAnswerIndex: PropTypes.number,
   correctAnswerIndexes: PropTypes.arrayOf(PropTypes.number),
+  tip: PropTypes.string,
   explanationCorrect: PropTypes.string.isRequired,
   explanationIncorrect: PropTypes.string.isRequired,
   optionFeedback: PropTypes.arrayOf(PropTypes.string),

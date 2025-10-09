@@ -22,7 +22,7 @@ export const formFields = [
     nextField: "ageCheck",
   },
   {
-    title: "Are you between the ages of 18 and 20?",
+    title: "Are you between the ages of 21 and 25?",
     fieldName: "ageCheck",
     inputType: "select",
     options: [
@@ -199,7 +199,7 @@ export const formFields = [
   },
   {
     title:
-      "Have you ever ridden in a car driven by someone (including yourself) who was high or had been using alcohol or drugs?",
+      "Have you ever ridden in a car driven by someone (including yourself) who was high or had been using alcohol?",
     fieldName: "crafftQuestions",
     inputType: "select",
     options: [
@@ -209,7 +209,7 @@ export const formFields = [
   },
   {
     title:
-      "Do you ever use alcohol or drugs to relax, feel better about yourself, or fit in?",
+      "Do you ever use alcohol to relax, feel better about yourself, or fit in?",
     fieldName: "crafftQuestions_2",
     inputType: "select",
     options: [
@@ -218,7 +218,7 @@ export const formFields = [
     ],
   },
   {
-    title: "Do you ever use alcohol or drugs when you are alone?",
+    title: "Do you ever use alcohol when you are alone?",
     fieldName: "crafftQuestions_3",
     inputType: "select",
     options: [
@@ -227,7 +227,7 @@ export const formFields = [
     ],
   },
   {
-    title: "Do you ever forget things you did while using alcohol or drugs?",
+    title: "Do you ever forget things you did while using alcohol?",
     fieldName: "crafftQuestions_4",
     inputType: "select",
     options: [
@@ -237,7 +237,7 @@ export const formFields = [
   },
   {
     title:
-      "Have your family or friends ever told you that you should cut down on your drinking or drug use?",
+      "Have your family or friends ever told you that you should cut down on your drinking?",
     fieldName: "crafftQuestions_5",
     inputType: "select",
     options: [
@@ -247,7 +247,7 @@ export const formFields = [
   },
   {
     title:
-      "Have you ever gotten into trouble while you were using alcohol or drugs?",
+      "Have you ever gotten into trouble while you were using alcohol?",
     fieldName: "crafftQuestions_6",
     inputType: "select",
     options: [

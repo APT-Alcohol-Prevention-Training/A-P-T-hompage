@@ -7,6 +7,7 @@ export const scenarioQuestions = {
         "Any amount of alcohol in a cup",
         "A cocktail with multiple types of alcohol",
       ],
+      tip: "Tip: Just because a drink is smaller or lighter doesn’t mean it contains less alcohol! Cocktails and mixed drinks often have more than one standard drink in them.",
       correctAnswerIndex: 0,
       explanationCorrect:
         "Yes! A standard drink is 12 oz beer (5% alcohol), 5 oz wine (12% alcohol), or 1.5 oz liquor (40% alcohol).",
@@ -58,6 +59,7 @@ export const scenarioQuestions = {
         "I'm taking a break from drinking right now.",
         "Uhh... I don't know, I guess I'll take it.",
       ],
+      tip: "Tip: Keep a non-alcoholic drink in your hand—it helps avoid repeated offers.",
       correctAnswerIndexes: [0, 1, 2],
       explanationCorrect:
         "Great choice! Keeping it simple and confident works best. Most people respect a direct but friendly response.",

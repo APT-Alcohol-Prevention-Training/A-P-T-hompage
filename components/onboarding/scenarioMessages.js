@@ -1,7 +1,7 @@
 export const scenarioMessages = {
   scenario1: {
     message1: {
-      title: "You're making responsible choices about alcohol!",
+      title: "What You'll Learn Today",
       learningPoints: [
         "What is a Standard Drink?",
         "How Alcohol Affects the Body",
@@ -22,7 +22,7 @@ export const scenarioMessages = {
           ],
         },
       ],
-      tip: "Just because a drink is smaller or lighter doesn't mean it contains less alcohol—cocktails often include more than one standard drink.",
+      tip: "Tip: Just because a drink is smaller or lighter doesn’t mean it contains less alcohol! Cocktails and mixed drinks often have more than one standard drink in them.",
     },
     message2: {
       title: "How Alcohol Affects the Body",
@@ -50,7 +50,6 @@ export const scenarioMessages = {
           ],
         },
       ],
-      tip: "Great! It looks like you're staying informed—let's put it into practice with a quick scenario.",
     },
   },
   scenario2: {
@@ -74,6 +73,7 @@ export const scenarioMessages = {
           ],
         },
       ],
+      tip: "Tip: Keep a non-alcoholic drink in your hand—it helps avoid repeated offers.",
     },
     message2: {
       title: "How to Say No to Alcohol (Without Feeling Awkward)",
@@ -88,7 +88,6 @@ export const scenarioMessages = {
           ],
         },
       ],
-      tip: "Keep a non-alcoholic drink in your hand to avoid repeated offers.",
     },
     message3: {
       title: "Alternatives to Drinking",
@@ -102,7 +101,7 @@ export const scenarioMessages = {
           ],
         },
       ],
-      tip: "Great! You can enjoy the event on your terms—now let's practice.",
+      tip: "Tip: If you notice these signs, it might be time to take a step back and reevaluate your drinking habits.",
     },
   },
   scenario3: {
@@ -155,12 +154,11 @@ export const scenarioMessages = {
           ],
         },
       ],
-      tip: "You're building awareness—let's apply it with a quick scenario.",
     },
   },
   scenario4: {
     message1: {
-      title: "Support can help you make important changes.",
+      title: "What You'll Learn Today",
       learningPoints: [
         "Understanding Alcohol Dependence",
         "How to Cut Back Safely",
@@ -203,7 +201,6 @@ export const scenarioMessages = {
           ],
         },
       ],
-      tip: "You're not alone—let's explore a scenario to plan your next step.",
     },
   },
 };

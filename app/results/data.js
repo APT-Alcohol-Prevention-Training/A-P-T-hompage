@@ -1,6 +1,6 @@
 export const results = {
   "0-3": {
-    scenario: "Low Risk (0-3 Points)",
+    scenario: "Low Risk (Safe Zone)",
     questions: [
       {
         question: "What do you think counts as a 'standard drink'?",
@@ -82,7 +82,7 @@ export const results = {
     ],
   },
   "4-7": {
-    scenario: "Moderate Risk (4-7 Points)",
+    scenario: "Moderate Risk (Caution Zone)",
     questions: [
       {
         question: "How long does it take for your body to process ONE standard drink?",
@@ -170,7 +170,7 @@ export const results = {
     ],
   },
   "8-12": {
-    scenario: "High Risk (8-12 Points)",
+    scenario: "High Risk (Intervention Zone)",
     questions: [
       {
         question: "Have you ever felt guilty about drinking?",
@@ -244,7 +244,7 @@ export const results = {
     ],
   },
   "13+": {
-    scenario: "Severe Risk (13+ Points)",
+    scenario: "Severe Risk (Critical Zone)",
     questions: [
       {
         question:
