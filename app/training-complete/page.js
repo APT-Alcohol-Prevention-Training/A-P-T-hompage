@@ -130,12 +130,6 @@ const Page = () => {
                 </li>
               </ol>
             </div>
-            <div className="text-left space-y-2">
-              <p className="text-gray-700">
-                When you’re ready, you can return to the home screen.
-              </p>
-              <Button onClick={handleRedirect}>Go to Home</Button>
-            </div>
           </div>
         )}
       </div>
