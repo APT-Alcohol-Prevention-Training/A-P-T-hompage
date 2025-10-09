@@ -7,7 +7,7 @@ const Scenario1 = () => {
   return (
     <ScenarioFlow
       scenarioNumber={1}
-      messages={[1, 2]} 
+      messages={[1, 2, 3]} 
       questions={scenarioQuestions.scenario1}
     />
   );

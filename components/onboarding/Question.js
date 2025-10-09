@@ -1,7 +1,7 @@
 // components/Question.js
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import PropTypes from "prop-types";
 import Button from "../Button"; // adjust path to your Button component
@@ -11,8 +11,11 @@ export default function Question({
   questionText,
   options,
   correctAnswerIndex,
+  correctAnswerIndexes,
   explanationCorrect,
   explanationIncorrect,
+  optionFeedback = [],
+  showCorrectness = true,
   onContinue,
 }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -24,7 +27,21 @@ export default function Question({
     setAnswered(true);
   }
 
-  const isCorrect = selectedIndex === correctAnswerIndex;
+  const normalizedCorrectIndexes = useMemo(() => {
+    if (Array.isArray(correctAnswerIndexes) && correctAnswerIndexes.length > 0) {
+      return correctAnswerIndexes;
+    }
+    if (typeof correctAnswerIndex === "number") {
+      return [correctAnswerIndex];
+    }
+    return [];
+  }, [correctAnswerIndex, correctAnswerIndexes]);
+
+  const hasEvaluation = normalizedCorrectIndexes.length > 0 && showCorrectness;
+  const isCorrect =
+    selectedIndex !== null
+      ? normalizedCorrectIndexes.includes(selectedIndex)
+      : false;
 
   return (
     <div className="max-w-[600px] mx-auto p-6 mt-8">
@@ -41,7 +58,11 @@ export default function Question({
         {options.map((opt, idx) => {
           let bgClass = "bg-white hover:border-[#0364B3] border-2";
           if (answered && idx === selectedIndex) {
-            bgClass = isCorrect ? "bg-green-200" : "bg-red-200";
+            if (!hasEvaluation && showCorrectness === false) {
+              bgClass = "bg-blue-100 border-[#0364B3]";
+            } else {
+              bgClass = isCorrect ? "bg-green-200" : "bg-red-200";
+            }
           }
           return (
             <button
@@ -58,11 +79,14 @@ export default function Question({
       {/* Explanation */}
       {answered && (
         <div className="mb-6 p-4 bg-gray-50 rounded">
-          <p className="font-medium">
-            {isCorrect ? "✅ Correct!" : "❌ Incorrect!"}
-          </p>
+          {showCorrectness && hasEvaluation && (
+            <p className="font-medium">
+              {isCorrect ? "✅ Correct!" : "❌ Incorrect!"}
+            </p>
+          )}
           <p className="mt-2 text-sm">
-            {isCorrect ? explanationCorrect : explanationIncorrect}
+            {optionFeedback[selectedIndex] ??
+              (isCorrect ? explanationCorrect : explanationIncorrect)}
           </p>
         </div>
       )}
@@ -81,8 +105,11 @@ Question.propTypes = {
   logoSrc: PropTypes.string,
   questionText: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  correctAnswerIndex: PropTypes.number.isRequired,
+  correctAnswerIndex: PropTypes.number,
+  correctAnswerIndexes: PropTypes.arrayOf(PropTypes.number),
   explanationCorrect: PropTypes.string.isRequired,
   explanationIncorrect: PropTypes.string.isRequired,
+  optionFeedback: PropTypes.arrayOf(PropTypes.string),
+  showCorrectness: PropTypes.bool,
   onContinue: PropTypes.func.isRequired,
 };

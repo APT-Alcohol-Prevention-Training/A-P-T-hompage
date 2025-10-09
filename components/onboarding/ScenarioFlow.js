@@ -56,8 +56,15 @@ const ScenarioFlow = ({ scenarioNumber, messages, questions }) => {
           questionText={question.questionText}
           options={question.options}
           correctAnswerIndex={question.correctAnswerIndex}
+          correctAnswerIndexes={question.correctAnswerIndexes}
           explanationCorrect={question.explanationCorrect}
           explanationIncorrect={question.explanationIncorrect}
+          optionFeedback={question.optionFeedback}
+          showCorrectness={
+            typeof question.showCorrectness === "boolean"
+              ? question.showCorrectness
+              : true
+          }
           onContinue={handleContinue}
         />
       );
