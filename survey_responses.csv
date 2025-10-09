@@ -14,3 +14,6 @@ timestamp,ip,ageCheck,alcoholExperience,crafftQuestions,crafftQuestions_2,crafft
 2025-10-09T05:13:12.759Z,::1,yes,yes,yes,yes,yes,yes,yes,yes,occasionally,1-3TimesAMonth,1-2Days,2-3Drinks,,,,,WFE123
 2025-10-09T05:14:14.206Z,::1,yes,yes,yes,no,no,no,no,no,daily,never,0Days,1Drink,,,,,WFE123
 2025-10-09T05:15:14.523Z,::1,yes,yes,yes,no,no,no,no,no,daily,never,0Days,1Drink,,,,,WFE123
+2025-10-09T05:18:42.189Z,::1,yes,yes,yes,no,yes,no,yes,yes,daily,never,0Days,1Drink,,,,,WFE123
+2025-10-09T05:20:29.941Z,::1,yes,yes,no,no,no,no,no,no,never,never,0Days,1Drink,,,,,WFE123
+2025-10-09T05:21:17.151Z,::1,yes,yes,no,no,no,no,no,no,never,never,0Days,1Drink,,,,,WFE123
