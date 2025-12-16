@@ -2,13 +2,14 @@
 
 import { useOnboarding } from "@/context/OnboardingContext";
 import React, { FormEvent, useEffect, useState } from "react";
+import Image from "next/image";
 import RadioField from "./input-fields/RadioField";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import TextField from "./input-fields/TextField";
 import NumberField from "./input-fields/NumberField";
 import DateField from "./input-fields/DateField";
 import Button from "../Button";
-import { formSteps } from "@/misc/constants";
+import { formSteps } from "@/lib/constants";
 
 const FormStepsField = ({
   inputType,
@@ -109,7 +110,13 @@ const FormStepsField = ({
       case "image":
         return (
           <div className="flex flex-col items-center">
-            <img src="/images/graph.png" alt="graph" />
+            <Image
+              src="/images/graph.png"
+              alt="graph"
+              width={800}
+              height={600}
+              className="h-auto w-full max-w-md"
+            />
           </div>
         );
       default:

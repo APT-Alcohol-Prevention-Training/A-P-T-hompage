@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
+import { getOrCreateSurveySessionId } from "@/lib/session";
 
 const generateCode = () => {
   if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
@@ -30,8 +31,17 @@ const completionSteps = [
   "Please enter the following completion code:",
 ];
 
+const determineRangeKey = (score) => {
+  if (Number.isNaN(score)) return "";
+  if (score <= 3) return "0-3";
+  if (score <= 7) return "4-7";
+  if (score <= 12) return "8-12";
+  return "13+";
+};
+
 const Page = () => {
   const router = useRouter();
+  const [sessionId, setSessionId] = useState("");
   const [completionCode, setCompletionCode] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
   const [introCountdown, setIntroCountdown] = useState(3);
@@ -39,8 +49,105 @@ const Page = () => {
   const [showCompletionCard, setShowCompletionCard] = useState(false);
 
   useEffect(() => {
-    setCompletionCode(generateCode());
+    const id = getOrCreateSurveySessionId() || "";
+    setSessionId(id);
   }, []);
+
+  useEffect(() => {
+    if (!sessionId) return;
+    try {
+      const stored = localStorage.getItem(`apt_completion_code_${sessionId}`);
+      if (stored) {
+        setCompletionCode(stored);
+        return;
+      }
+      const created = generateCode();
+      localStorage.setItem(`apt_completion_code_${sessionId}`, created);
+      setCompletionCode(created);
+    } catch {
+      setCompletionCode(generateCode());
+    }
+  }, [sessionId]);
+
+  useEffect(() => {
+    if (!sessionId || !completionCode) return;
+
+    const loggedKey = `apt_survey_logged_${sessionId}`;
+    try {
+      if (localStorage.getItem(loggedKey) === "1") return;
+    } catch {
+      // Ignore storage read failures and still attempt to log.
+    }
+
+    const readJson = (key) => {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    };
+
+    const answers = readJson("formValues");
+    const rawScore = (() => {
+      try {
+        return localStorage.getItem("totalPoints");
+      } catch {
+        return null;
+      }
+    })();
+    const parsedScore = rawScore !== null ? parseInt(rawScore, 10) : NaN;
+    const totalPoints = Number.isNaN(parsedScore) ? "" : parsedScore;
+    const rangeKey = Number.isNaN(parsedScore) ? "" : determineRangeKey(parsedScore);
+
+    const payload = {
+      sessionId,
+      completionCode,
+      totalPoints,
+      rangeKey,
+      answers,
+    };
+
+    const body = JSON.stringify(payload);
+
+    const trySendBeacon = () => {
+      try {
+        if (!navigator?.sendBeacon) return false;
+        const ok = navigator.sendBeacon(
+          "/api/survey",
+          new Blob([body], { type: "application/json" })
+        );
+        if (ok) {
+          try {
+            localStorage.setItem(loggedKey, "1");
+          } catch {}
+        }
+        return ok;
+      } catch {
+        return false;
+      }
+    };
+
+    (async () => {
+      try {
+        const res = await fetch("/api/survey", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+          keepalive: true,
+        });
+        if (res.ok) {
+          try {
+            localStorage.setItem(loggedKey, "1");
+          } catch {}
+          return;
+        }
+      } catch {
+        // ignore
+      }
+      trySendBeacon();
+    })();
+  }, [completionCode, sessionId]);
 
   useEffect(() => {
     setIntroCountdown(3);
@@ -86,7 +193,7 @@ const Page = () => {
         {!showCompletionCard && (
           <div className="space-y-4">
             <h1 className="text-2xl font-semibold text-[#374557]">
-              You're not alone in making healthy choices.
+              {"You're not alone in making healthy choices."}
             </h1>
             <p className="text-gray-700">{encouragementMessage}</p>
             {!showContinue && (

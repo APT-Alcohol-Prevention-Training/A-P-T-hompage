@@ -7,10 +7,11 @@ import React, {
   createContext,
   useContext,
 } from "react";
-import { formSteps } from "../misc/constants";
-import { formFields } from "../misc/onboardingFields";
-import { routes } from "../misc/routes";
+import { formSteps } from "@/lib/constants";
+import { formFields } from "@/lib/onboardingFields";
+import { routes } from "@/lib/routes";
 import { useRouter } from "next/navigation";
+import { getOrCreateSurveySessionId } from "@/lib/session";
 
 export const OnboardingContext = createContext(undefined);
 
@@ -19,6 +20,9 @@ export const OnboardingProvider = ({ children }) => {
   const [data, setData] = useState({ photoURLs: [null, null, null, null] });
 
   useEffect(() => {
+    // Ensure we have a stable per-user id for CSV logging later (training completion).
+    getOrCreateSurveySessionId();
+
     const stored = localStorage.getItem("formValues");
     if (stored) {
       setData(JSON.parse(stored));
@@ -74,17 +78,6 @@ export const OnboardingProvider = ({ children }) => {
 
       // Store total points for later use
       localStorage.setItem("totalPoints", totalPoints.toString());
-
-      // Send survey answers to backend for logging (fire-and-forget)
-      try {
-        fetch("/api/survey", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answers: data }),
-        });
-      } catch (err) {
-        console.error("Failed to log survey response", err);
-      }
 
       router.push(`/results`);
       return;

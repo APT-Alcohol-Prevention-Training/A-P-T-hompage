@@ -5,7 +5,7 @@ import Scenario1 from '@/components/onboarding/scoring-scenarios/Scenario1';
 import Scenario2 from '@/components/onboarding/scoring-scenarios/Scenario2';
 import Scenario3 from '@/components/onboarding/scoring-scenarios/Scenario3';
 import Scenario4 from '@/components/onboarding/scoring-scenarios/Scenario4';
-import { scoringSystem } from '@/misc/constants';
+import { scoringSystem } from '@/lib/constants';
 import { results } from './data';
 
 const scenarioComponentMap = {

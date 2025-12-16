@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { formFields } from "@/misc/onboardingFields";
+import { formFields } from "@/lib/onboardingFields";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useParams } from "next/navigation";
 import FormStepsField from "@/components/onboarding/FormStepsField";
@@ -16,7 +16,7 @@ function Page() {
     setCurrentStep(slug);
     const stepIndex = formFields.findIndex((f) => f.fieldName === slug);
     setActiveStep(stepIndex > -1 ? stepIndex : 0);
-  }, [slug, setStep]);
+  }, [slug, setStep, setCurrentStep, setActiveStep]);
 
   const field = formFields.find((f) => f.fieldName === currentStep);
   if (field?.inputType) {
