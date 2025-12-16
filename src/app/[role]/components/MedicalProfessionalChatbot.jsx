@@ -218,7 +218,6 @@ const WelcomeSection = ({ setShowChatList }) => {
         className="w-fit mt-[24px]"
         onClick={() => {
           setShowChatList(true);
-          console.log("Btn clicked!!!");
         }}
       >
         Get Started
