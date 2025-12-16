@@ -1,3 +1,15 @@
+## Project Owner / Research Context
+
+I am helping **Jeonghyun (Grace) Kim** with the APT paper/thesis assignment.
+
+**Grace Jeonghyun Kim**  
+Graduate Student, Communication  
+jkim0501@umd.edu  
+
+Jeonghyun (Grace) Kim earned a master's degree in journalism from Georgetown University and a bachelor's degree in communications from the University of Arizona.
+
+She has a 9-year career in which she excelled as a market trend reporter and has served in numerous positions associated with communications and engagement campaigns for the World Bank, United Nations, and Greenpeace. She has also worked for Philips that combines aspects of strategic marketing and business development in the realm of digital healthcare. Her research interests include health communication, digital health, communication technology, and health equity.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
