@@ -2,9 +2,9 @@ import React from 'react'
 import { render, renderHook, act, waitFor } from '@testing-library/react'
 import { useRouter } from 'next/navigation'
 import { OnboardingProvider, useOnboarding } from './OnboardingContext'
-import { formFields } from '@/misc/onboardingFields'
-import { formSteps } from '@/misc/constants'
-import { routes } from '@/misc/routes'
+import { formFields } from '@/lib/onboardingFields'
+import { formSteps } from '@/lib/constants'
+import { routes } from '@/lib/routes'
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -12,7 +12,7 @@ jest.mock('next/navigation', () => ({
 }))
 
 // Mock the imports
-jest.mock('@/misc/onboardingFields', () => ({
+jest.mock('@/lib/onboardingFields', () => ({
   formFields: [
     {
       fieldName: 'step1',
@@ -41,11 +41,11 @@ jest.mock('@/misc/onboardingFields', () => ({
   ]
 }))
 
-jest.mock('@/misc/constants', () => ({
+jest.mock('@/lib/constants', () => ({
   formSteps: ['step1', 'step2', 'step3']
 }))
 
-jest.mock('@/misc/routes', () => ({
+jest.mock('@/lib/routes', () => ({
   routes: {
     onboarding: '/onboarding'
   }
@@ -207,21 +207,9 @@ describe('OnboardingContext', () => {
       expect(mockPush).toHaveBeenCalledWith('/results')
       // Navigation to results should happen
       expect(mockPush).toHaveBeenCalledTimes(1)
-      
-      await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/survey', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            answers: {
-              photoURLs: [null, null, null, null],
-              step1: 'yes',
-              step2: 'option1',
-              step3: 'final1'
-            }
-          })
-        })
-      })
+
+      // Survey answers are logged once the training is completed (to include the final completion code).
+      expect(global.fetch).not.toHaveBeenCalled()
     })
 
     it.skip('handles fetch error gracefully', async () => {
@@ -231,8 +219,8 @@ describe('OnboardingContext', () => {
 
     it('navigates to confirmation page if no next step', () => {
       // Mock a field without nextField
-      const originalFormFields = jest.requireMock('@/misc/onboardingFields').formFields
-      jest.requireMock('@/misc/onboardingFields').formFields = [
+      const originalFormFields = jest.requireMock('@/lib/onboardingFields').formFields
+      jest.requireMock('@/lib/onboardingFields').formFields = [
         { fieldName: 'noNext' }
       ]
 
@@ -249,7 +237,7 @@ describe('OnboardingContext', () => {
       expect(mockPush).toHaveBeenCalledWith('/onboarding/confirmation')
 
       // Restore original mock
-      jest.requireMock('@/misc/onboardingFields').formFields = originalFormFields
+      jest.requireMock('@/lib/onboardingFields').formFields = originalFormFields
     })
 
     it('handles missing step in formSteps', () => {
@@ -263,8 +251,8 @@ describe('OnboardingContext', () => {
       })
 
       // Temporarily modify formSteps to not include step2
-      const originalFormSteps = jest.requireMock('@/misc/constants').formSteps
-      jest.requireMock('@/misc/constants').formSteps = ['step1', 'step3']
+      const originalFormSteps = jest.requireMock('@/lib/constants').formSteps
+      jest.requireMock('@/lib/constants').formSteps = ['step1', 'step3']
 
       act(() => {
         result.current.goToNextStep()
@@ -273,13 +261,14 @@ describe('OnboardingContext', () => {
       expect(consoleSpy).toHaveBeenCalledWith('Step "step2" not found in formSteps.')
 
       // Restore original mock
-      jest.requireMock('@/misc/constants').formSteps = originalFormSteps
+      jest.requireMock('@/lib/constants').formSteps = originalFormSteps
       consoleSpy.mockRestore()
     })
   })
 
   describe('handleBack', () => {
     it('navigates to previous step', () => {
+      const historySpy = jest.spyOn(window.history, 'back').mockImplementation(() => {})
       const { result } = renderHook(() => useOnboarding(), { wrapper })
 
       act(() => {
@@ -290,11 +279,13 @@ describe('OnboardingContext', () => {
         result.current.handleBack()
       })
 
-      expect(mockPush).toHaveBeenCalledWith('/onboarding/step2')
       expect(result.current.activeStep).toBe(1)
+      expect(historySpy).toHaveBeenCalled()
+      historySpy.mockRestore()
     })
 
     it('does not navigate if at first step', () => {
+      const historySpy = jest.spyOn(window.history, 'back').mockImplementation(() => {})
       const { result } = renderHook(() => useOnboarding(), { wrapper })
 
       act(() => {
@@ -305,8 +296,9 @@ describe('OnboardingContext', () => {
         result.current.handleBack()
       })
 
-      expect(mockPush).not.toHaveBeenCalled()
+      expect(historySpy).not.toHaveBeenCalled()
       expect(result.current.activeStep).toBe(0)
+      historySpy.mockRestore()
     })
   })
 
