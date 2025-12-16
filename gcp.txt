@@ -1,0 +1,200 @@
+GCP (Debian) Production Setup — A-P-T-hompage (Next.js)
+======================================================
+
+This guide sets up the app on a single GCP VM (e.g., e2-medium) with:
+- Node.js (LTS) + Next.js production build
+- systemd service (auto-start + restart)
+- Nginx reverse proxy (optional but recommended)
+- Persistent CSV storage for survey responses
+
+
+0) GCP Console prerequisites (one-time)
+--------------------------------------
+
+1) VM: Debian 12/11 or similar
+2) Network tags / firewall:
+   - Allow HTTP (port 80) and HTTPS (port 443) to the VM
+   - If you will NOT use Nginx and want to expose Next directly:
+     open port 3000 instead (not recommended)
+3) Disk: ensure enough free space (CSV grows over time)
+
+
+1) OS packages + Node.js install
+-------------------------------
+
+Run on the VM:
+
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo apt-get install -y git curl ca-certificates gnupg
+
+# Install Node.js 20 LTS (NodeSource)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Confirm versions
+node -v
+npm -v
+
+
+2) Clone the repository
+-----------------------
+
+Choose ONE (recommended: upstream repo; it’s public):
+
+git clone https://github.com/APT-Alcohol-Prevention-Training/A-P-T-hompage.git
+
+Then:
+
+cd A-P-T-hompage
+
+
+3) Install dependencies + build
+-------------------------------
+
+cd ~/A-P-T-hompage
+npm ci
+npm run build
+
+
+4) Persistent CSV storage (IMPORTANT)
+-------------------------------------
+
+This project writes survey results as 1 user = 1 CSV row.
+Do NOT run this app in cluster/multi-process mode if you keep CSV storage.
+
+Create a persistent directory outside the repo:
+
+sudo mkdir -p /var/lib/apt-homepage
+sudo chown -R $(whoami):$(whoami) /var/lib/apt-homepage
+
+We will store CSV here:
+  /var/lib/apt-homepage/survey_responses.csv
+
+
+5) Configure environment variables
+----------------------------------
+
+Create an env file used by systemd:
+
+sudo tee /etc/apt-homepage.env > /dev/null <<'EOF'
+NODE_ENV=production
+PORT=3000
+
+# Required for CSV download page (/download) and GET /api/survey
+CSV_DOWNLOAD_PASSWORD=change-me
+
+# Persistent CSV path (outside the git repo)
+SURVEY_CSV_PATH=/var/lib/apt-homepage/survey_responses.csv
+EOF
+
+sudo chmod 600 /etc/apt-homepage.env
+
+
+6) systemd service (auto start + restart)
+-----------------------------------------
+
+Create a systemd service:
+
+sudo tee /etc/systemd/system/apt-homepage.service > /dev/null <<'EOF'
+[Unit]
+Description=APT Homepage (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+User=aptumdproject
+WorkingDirectory=/home/aptumdproject/A-P-T-hompage
+EnvironmentFile=/etc/apt-homepage.env
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+Reload + enable + start:
+
+sudo systemctl daemon-reload
+sudo systemctl enable apt-homepage
+sudo systemctl restart apt-homepage
+
+Check status/logs:
+
+sudo systemctl status apt-homepage --no-pager
+journalctl -u apt-homepage -f
+
+
+7) Nginx reverse proxy (recommended)
+------------------------------------
+
+Install:
+
+sudo apt-get install -y nginx
+
+Create a site config:
+
+sudo tee /etc/nginx/sites-available/apt-homepage > /dev/null <<'EOF'
+server {
+  listen 80;
+  server_name _;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}
+EOF
+
+Enable it:
+
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo ln -sf /etc/nginx/sites-available/apt-homepage /etc/nginx/sites-enabled/apt-homepage
+sudo nginx -t
+sudo systemctl restart nginx
+
+Now the app is available on:
+  http://<VM_EXTERNAL_IP>/
+
+
+8) Verify (quick smoke checks)
+------------------------------
+
+# Home page
+curl -I http://127.0.0.1:3000/ | head
+
+# Onboarding page (example)
+curl -I http://127.0.0.1:3000/onboarding/sectionCode | head
+
+# Download UI page
+curl -I http://127.0.0.1:3000/download | head
+
+# CSV download endpoint (basic auth)
+PASS='change-me'
+curl -u "user:${PASS}" -o survey_responses.csv http://127.0.0.1:3000/api/survey
+
+
+9) Update / redeploy
+--------------------
+
+cd ~/A-P-T-hompage
+git pull
+npm ci
+npm run build
+sudo systemctl restart apt-homepage
+
+
+10) Notes / limits
+------------------
+
+- CSV storage is safe for a single VM running a single Next.js process.
+  If you scale horizontally (multiple VMs) or run multiple Node processes,
+  move storage to a real DB (Postgres/Cloud SQL/etc).
+- CSV will grow; periodically download/archive it.
+- /download is protected only by a shared password (Basic Auth).
+  Consider restricting access (VPN/IP allowlist) if needed.
