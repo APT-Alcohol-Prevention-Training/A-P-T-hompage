@@ -1,22 +1,42 @@
+## Project Owner / Research Context
+
+I am helping **Jeonghyun (Grace) Kim** with the APT paper/thesis assignment.
+
+**Grace Jeonghyun Kim**  
+Graduate Student, Communication  
+jkim0501@umd.edu  
+
+Jeonghyun (Grace) Kim earned a master's degree in journalism from Georgetown University and a bachelor's degree in communications from the University of Arizona.
+
+She has a 9-year career in which she excelled as a market trend reporter and has served in numerous positions associated with communications and engagement campaigns for the World Bank, United Nations, and Greenpeace. She has also worked for Philips that combines aspects of strategic marketing and business development in the realm of digital healthcare. Her research interests include health communication, digital health, communication technology, and health equity.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+### Local (dev)
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+If port 3000 is already in use:
+
+```bash
+npm run dev -- -p 3002 # choose any free port
+```
+
+You can start editing the page by modifying `src/app/page.js`. The page auto-updates as you edit the file.
+
+### Local (production-like)
+
+```bash
+npm run build
+npm run start
+```
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
@@ -35,3 +55,21 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # grace-chatbot
+
+## Survey CSV logging
+
+- Writes 1 user = 1 row to `data/survey_responses.csv` (override with `SURVEY_CSV_PATH`).
+- Download via `GET /api/survey` with Basic Auth password in `CSV_DOWNLOAD_PASSWORD`.
+- UI download page: open `/download`, enter the same password, click “Download CSV”.
+
+Local env example (`.env.local`):
+
+```bash
+CSV_DOWNLOAD_PASSWORD=local-download
+SURVEY_CSV_PATH=./data/survey_responses.csv
+```
+
+## Tests
+
+- `npm test` (includes a 300-user load test; override with `SURVEY_LOAD_USERS=1000`)
+- `npm run test:e2e`

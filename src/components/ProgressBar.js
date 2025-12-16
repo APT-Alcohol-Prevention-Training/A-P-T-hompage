@@ -1,5 +1,5 @@
 import { useOnboarding } from "@/context/OnboardingContext";
-import { formSteps } from "@/misc/constants";
+import { formSteps } from "@/lib/constants";
 import React from "react";
 
 function ProgressBar() {

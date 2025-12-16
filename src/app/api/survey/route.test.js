@@ -11,6 +11,9 @@ jest.mock('fs')
 jest.mock('path', () => ({
   join: jest.fn(() => '/mock/path/survey_responses.csv')
 }))
+jest.mock('@/lib/onboardingFields', () => ({
+  formFields: [{ fieldName: 'ageCheck' }, { fieldName: 'alcoholExperience' }]
+}))
 
 // Mock NextResponse
 jest.mock('next/server', () => ({
@@ -66,6 +69,7 @@ describe('Survey API Route', () => {
 
   describe('POST /api/survey', () => {
     it('should save survey response to CSV file', async () => {
+      const mockSessionId = 'sess-123'
       const mockAnswers = {
         ageCheck: 'yes',
         alcoholExperience: 'no',
@@ -73,7 +77,13 @@ describe('Survey API Route', () => {
       }
 
       const mockRequest = {
-        json: jest.fn().mockResolvedValue({ answers: mockAnswers }),
+        json: jest.fn().mockResolvedValue({
+          sessionId: mockSessionId,
+          completionCode: 'ABC123',
+          totalPoints: 5,
+          rangeKey: '4-7',
+          answers: mockAnswers
+        }),
         headers: {
           get: jest.fn((header) => {
             if (header === 'x-forwarded-for') return '192.168.1.1'
@@ -82,26 +92,45 @@ describe('Survey API Route', () => {
         }
       }
 
-      fs.existsSync.mockReturnValue(true)
-      fs.statSync.mockReturnValue({ size: 100 })
+      fs.existsSync.mockReturnValue(false)
+      fs.writeFileSync.mockImplementation(() => {})
       fs.appendFileSync.mockImplementation(() => {})
 
       const response = await POST(mockRequest)
       const data = await response.json()
 
-      expect(data).toEqual({ status: 'ok' })
+      expect(data).toEqual({ status: 'ok', sessionId: mockSessionId })
+      expect(fs.writeFileSync).toHaveBeenCalledWith(
+        mockCsvPath,
+        expect.stringContaining(
+          'sessionId,timestamp,ip,userAgent,totalPoints,rangeKey,completionCode,photoURLs,ageCheck,alcoholExperience,answers_json'
+        ),
+        { encoding: 'utf8' }
+      )
       expect(fs.appendFileSync).toHaveBeenCalledWith(
         mockCsvPath,
         expect.stringContaining('192.168.1.1'),
         { encoding: 'utf8' }
       )
+      expect(fs.appendFileSync).toHaveBeenCalledWith(
+        mockCsvPath,
+        expect.stringContaining('ABC123'),
+        { encoding: 'utf8' }
+      )
     })
 
     it('should create CSV file with headers if it does not exist', async () => {
-      const mockAnswers = { question1: 'answer1', question2: 'answer2' }
+      const mockSessionId = 'sess-456'
+      const mockAnswers = { ageCheck: 'answer1', alcoholExperience: 'answer2' }
 
       const mockRequest = {
-        json: jest.fn().mockResolvedValue({ answers: mockAnswers }),
+        json: jest.fn().mockResolvedValue({
+          sessionId: mockSessionId,
+          completionCode: 'ZZ9999',
+          totalPoints: 0,
+          rangeKey: '0-3',
+          answers: mockAnswers
+        }),
         headers: {
           get: jest.fn().mockReturnValue(null)
         }
@@ -109,51 +138,68 @@ describe('Survey API Route', () => {
 
       fs.existsSync.mockReturnValue(false)
       fs.writeFileSync.mockImplementation(() => {})
-
-      const response = await POST(mockRequest)
-      const data = await response.json()
-
-      expect(data).toEqual({ status: 'ok' })
-      expect(fs.writeFileSync).toHaveBeenCalledWith(
-        mockCsvPath,
-        expect.stringContaining('timestamp,ip,question1,question2'),
-        { encoding: 'utf8' }
-      )
-    })
-
-    it('should handle empty answers object', async () => {
-      const mockRequest = {
-        json: jest.fn().mockResolvedValue({ answers: {} }),
-        headers: {
-          get: jest.fn().mockReturnValue(null)
-        }
-      }
-
-      fs.existsSync.mockReturnValue(true)
-      fs.statSync.mockReturnValue({ size: 100 })
       fs.appendFileSync.mockImplementation(() => {})
 
       const response = await POST(mockRequest)
       const data = await response.json()
 
-      expect(data).toEqual({ status: 'ok' })
+      expect(data).toEqual({ status: 'ok', sessionId: mockSessionId })
+      expect(fs.writeFileSync).toHaveBeenCalledWith(
+        mockCsvPath,
+        expect.stringContaining(
+          'sessionId,timestamp,ip,userAgent,totalPoints,rangeKey,completionCode,photoURLs,ageCheck,alcoholExperience,answers_json'
+        ),
+        { encoding: 'utf8' }
+      )
     })
 
-    it('should escape commas and quotes in answers', async () => {
-      const mockAnswers = {
-        answer1: 'test, with comma',
-        answer2: 'test "with quotes"'
-      }
-
+    it('should handle empty answers object', async () => {
+      const mockSessionId = 'sess-empty'
       const mockRequest = {
-        json: jest.fn().mockResolvedValue({ answers: mockAnswers }),
+        json: jest.fn().mockResolvedValue({
+          sessionId: mockSessionId,
+          completionCode: '',
+          totalPoints: '',
+          rangeKey: '',
+          answers: {}
+        }),
         headers: {
           get: jest.fn().mockReturnValue(null)
         }
       }
 
-      fs.existsSync.mockReturnValue(true)
-      fs.statSync.mockReturnValue({ size: 100 })
+      fs.existsSync.mockReturnValue(false)
+      fs.writeFileSync.mockImplementation(() => {})
+      fs.appendFileSync.mockImplementation(() => {})
+
+      const response = await POST(mockRequest)
+      const data = await response.json()
+
+      expect(data).toEqual({ status: 'ok', sessionId: mockSessionId })
+    })
+
+    it('should escape commas and quotes in answers', async () => {
+      const mockSessionId = 'sess-escape'
+      const mockAnswers = {
+        ageCheck: 'test, with comma',
+        alcoholExperience: 'test "with quotes"'
+      }
+
+      const mockRequest = {
+        json: jest.fn().mockResolvedValue({
+          sessionId: mockSessionId,
+          completionCode: 'CODE01',
+          totalPoints: 1,
+          rangeKey: '0-3',
+          answers: mockAnswers
+        }),
+        headers: {
+          get: jest.fn().mockReturnValue(null)
+        }
+      }
+
+      fs.existsSync.mockReturnValue(false)
+      fs.writeFileSync.mockImplementation(() => {})
       fs.appendFileSync.mockImplementation(() => {})
 
       await POST(mockRequest)
@@ -163,11 +209,22 @@ describe('Survey API Route', () => {
         expect.stringContaining('"test, with comma"'),
         { encoding: 'utf8' }
       )
+      expect(fs.appendFileSync).toHaveBeenCalledWith(
+        mockCsvPath,
+        expect.stringContaining('"test ""with quotes"""'),
+        { encoding: 'utf8' }
+      )
     })
 
     it('should handle multiple IP headers', async () => {
       const mockRequest = {
-        json: jest.fn().mockResolvedValue({ answers: {} }),
+        json: jest.fn().mockResolvedValue({
+          sessionId: 'sess-multi-ip',
+          completionCode: '',
+          totalPoints: '',
+          rangeKey: '',
+          answers: {}
+        }),
         headers: {
           get: jest.fn((header) => {
             if (header === 'x-forwarded-for') return '192.168.1.1, 10.0.0.1'
@@ -176,8 +233,8 @@ describe('Survey API Route', () => {
         }
       }
 
-      fs.existsSync.mockReturnValue(true)
-      fs.statSync.mockReturnValue({ size: 100 })
+      fs.existsSync.mockReturnValue(false)
+      fs.writeFileSync.mockImplementation(() => {})
       fs.appendFileSync.mockImplementation(() => {})
 
       await POST(mockRequest)
@@ -191,14 +248,20 @@ describe('Survey API Route', () => {
 
     it('should handle errors gracefully', async () => {
       const mockRequest = {
-        json: jest.fn().mockResolvedValue({ answers: {} }),
+        json: jest.fn().mockResolvedValue({
+          sessionId: 'sess-error',
+          completionCode: '',
+          totalPoints: '',
+          rangeKey: '',
+          answers: {}
+        }),
         headers: {
           get: jest.fn().mockReturnValue(null)
         }
       }
 
-      fs.existsSync.mockReturnValue(true)
-      fs.statSync.mockReturnValue({ size: 100 })
+      fs.existsSync.mockReturnValue(false)
+      fs.writeFileSync.mockImplementation(() => {})
       fs.appendFileSync.mockImplementation(() => {
         throw new Error('File write error')
       })
