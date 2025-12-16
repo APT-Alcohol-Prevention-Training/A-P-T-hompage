@@ -67,7 +67,7 @@ describe('Home Page', () => {
     const button = screen.getByRole('button', { name: /Let's Get Started/i })
     fireEvent.click(button)
     
-    expect(mockPush).toHaveBeenCalledWith('/onboarding/intro')
+    expect(mockPush).toHaveBeenCalledWith('/onboarding/sectionCode')
   })
 
   it('toggles clicked state when button is clicked', () => {
@@ -82,7 +82,7 @@ describe('Home Page', () => {
     fireEvent.click(button)
     
     // Verify navigation still happens
-    expect(mockPush).toHaveBeenCalledWith('/onboarding/intro')
+    expect(mockPush).toHaveBeenCalledWith('/onboarding/sectionCode')
   })
 
   it('has correct styling classes', () => {

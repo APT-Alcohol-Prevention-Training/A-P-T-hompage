@@ -2,13 +2,13 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import ProgressBar from "./ProgressBar";
 import { useOnboarding } from "@/context/OnboardingContext";
-import { formSteps } from "@/misc/constants";
+import { formSteps } from "@/lib/constants";
 
 // Mock the OnboardingContext
 jest.mock("@/context/OnboardingContext");
 
 // Mock the constants
-jest.mock("@/misc/constants", () => ({
+jest.mock("@/lib/constants", () => ({
   formSteps: [
     "step1",
     "step2",

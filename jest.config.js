@@ -9,12 +9,7 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    // Handle module aliases (this will be automatically configured for you soon)
-    '^@/components/(.*)$': '<rootDir>/components/$1',
-    '^@/pages/(.*)$': '<rootDir>/pages/$1',
-    '^@/app/(.*)$': '<rootDir>/app/$1',
-    '^@/misc/(.*)$': '<rootDir>/misc/$1',
-    '^@/context/(.*)$': '<rootDir>/context/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
   testEnvironment: 'jest-environment-jsdom',
   testMatch: [
@@ -23,10 +18,7 @@ const customJestConfig = {
   ],
   moduleFileExtensions: ['js', 'jsx', 'json', 'node'],
   collectCoverageFrom: [
-    'app/**/*.{js,jsx}',
-    'components/**/*.{js,jsx}',
-    'context/**/*.{js,jsx}',
-    'misc/**/*.{js,jsx}',
+    'src/**/*.{js,jsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/.next/**',
